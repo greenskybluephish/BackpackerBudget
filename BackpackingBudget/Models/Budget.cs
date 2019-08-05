@@ -30,7 +30,7 @@ namespace BackpackingBudget.Models
         [Required]
         [Display(Name = "Active Budget")]
         public bool IsActive { get; set; }
-        public virtual ICollection<BudgetCategory> BudgetCategory { get; set; }
+        public virtual List<BudgetCategory> BudgetCategory { get; set; }
 
 
     }

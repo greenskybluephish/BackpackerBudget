@@ -1,0 +1,44 @@
+﻿
+@model BackpackingBudget.Models.Budget
+
+@{
+    ViewData["Title"] = "CreateDetails";
+}
+
+@{var categories = Model.BudgetCategory; }
+
+<h4>BudgetCategory</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateDetails">
+            @{ for (int i = 0; i < categories.Count; i++)
+                {
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    @Html.HiddenFor(m => m.BudgetCategory[i].BudgetId)
+                    @Html.HiddenFor(m => m.BudgetCategory[i].Name)
+                    @Html.HiddenFor(m => m.BudgetCategory[i].BudgetCategoryId)
+
+                    <div id="container">
+                        <div class="wrap">
+                            <div class="e-control-wrapper e-numeric e-float-input e-input-group e-valid-input" style="width: 250px;">
+                            <input style="height: 25px;" id="BudgetCategory_@(i)__BudgetPerDay" name="BudgetCategory[@(i)].BudgetPerDay" class="e-control e-numerictextbox e-lib" role="spinbutton" tabindex="0" autocomplete="off" aria-live="assertive" aria-valuemin="-1.7976931348623157e+308" aria-valuemax="1.7976931348623157e+308" aria-labelledby="label_BudgetCategory_4__BudgetPerDay" aria-valuenow="21" value="$20.00">
+                            <input type="hidden" validatehidden="true" name="BudgetCategory[4].BudgetPerDay" value=@categories[i].BudgetPerDay>
+                            <span class="e-float-line"></span>
+                            <label class="e-float-text e-label-top" id="BudgetCategory_@(i)__BudgetPerDay" for="BudgetCategory_@(i)__BudgetPerDay">@Model.BudgetCategory[i].Name</label>
+                            <span class="e-input-group-icon e-spin-down" title="Decrement value" aria-label="Decrement value"></span>
+                            <span class="e-input-group-icon e-spin-up" title="Increment value" aria-label="Increment value"></span></div>
+                        </div>
+                    </div>
+
+                }
+            }
+            <ejs-button id="btn" content="Submit"></ejs-button>
+        </form>
+        </div>
+        
+
+    </div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

@@ -31,7 +31,15 @@ namespace BackpackingBudget.Controllers
         {
             var currentUser = await GetCurrentUserAsync();
             var budgets = await _context.Budget.Include(b => b.User).Where(b => b.User == currentUser).ToListAsync();
-            return View(budgets);
+            if (budgets != null)
+            {
+                return View(budgets);
+            }
+            else
+            {
+                List<Budget> empty = new List<Budget>();
+                return View(empty);
+            }
         }
 
         // GET: Budgets/Details/5
@@ -51,7 +59,7 @@ namespace BackpackingBudget.Controllers
         // GET: Budgets/Create
         public IActionResult Create()
         {
-
+            ViewBag.data = new string[] { "Transportation", "Lodging", "Food", "Activities", "Misc", "Non-Daily Expenses (Untracked)" };
             return View();
         }
 
@@ -61,8 +69,13 @@ namespace BackpackingBudget.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Create([Bind("Name,UserId,StartDate,EndDate,BudgetAmount,IsActive")] Budget budget)
+        public async Task<IActionResult> Create(string [] categories, [Bind("Name,UserId,StartDate,EndDate,BudgetAmount,IsActive")] Budget budget)
         {
+            if (categories.Length == 0 )
+            {
+                return View(budget);
+            }
+
             ModelState.Remove("User");
             ModelState.Remove("UserId");
             if (ModelState.IsValid)
@@ -81,17 +94,62 @@ namespace BackpackingBudget.Controllers
                         _context.Update(makeInactive);
                         await _context.SaveChangesAsync();
                     }
-                    return RedirectToAction(nameof(Dashboard));
+                    
                 }
-                else
+                var postedBudget = await _context.Budget.Where(b => b.BudgetId == budget.BudgetId).FirstOrDefaultAsync();
+
+                foreach (string category in categories)
                 {
-                    return RedirectToAction(nameof(Index));
+                    BudgetCategory bc = new BudgetCategory()
+                    {
+                        Name = category,
+                        BudgetId = postedBudget.BudgetId,
+                        BudgetPerDay = 0,
+                    };
+                    _context.BudgetCategory.Add(bc);
                 }
-                
+                await _context.SaveChangesAsync();
+
+                return View("CreateDetails", postedBudget);
             }
 
             return View(budget);
         }
+
+        public async Task<IActionResult> CreateDetails(Budget budget)
+        {
+
+            budget.BudgetCategory = await _context.BudgetCategory.Where(bc => bc.BudgetId == budget.BudgetId).ToListAsync();
+
+            return View(budget);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public async Task<IActionResult> CreateDetails([Bind("Name,BudgetPerDay,BudgetCategoryId,BudgetId")] BudgetCategory[] categories)
+        {
+            try
+            {
+                foreach (var bc in categories)
+                {
+                    var bcToUpdate = await _context.BudgetCategory.Where(b => b.BudgetCategoryId == bc.BudgetCategoryId).SingleOrDefaultAsync();
+                    bcToUpdate.BudgetPerDay = bc.BudgetPerDay;
+                    _context.Update(bcToUpdate);
+                }
+                await _context.SaveChangesAsync();
+                return View("Index");
+            }
+                catch (DbUpdateConcurrencyException)
+
+            {
+                    throw;
+            }
+            
+        }
+
+
+
 
         // GET: Budgets/Edit/5
         [Authorize]
