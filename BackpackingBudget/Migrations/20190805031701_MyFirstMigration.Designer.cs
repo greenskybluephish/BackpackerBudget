@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BackpackingBudget.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190804223911_lasttime")]
-    partial class lasttime
+    [Migration("20190805031701_MyFirstMigration")]
+    partial class MyFirstMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -82,7 +82,7 @@ namespace BackpackingBudget.Migrations
                         {
                             Id = "00000000-ffff-ffff-ffff-ffffffffffff",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5271836f-ae86-42de-b76d-e229226cdb98",
+                            ConcurrencyStamp = "3acf40c4-bb8d-4a30-bd87-49a920919099",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             FirstName = "Brian",
@@ -90,7 +90,7 @@ namespace BackpackingBudget.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEIVudsfw/s92YsAeWbaxxKUqs9us9HWm47bgChVLiqqYIAhW+KeRVx81YTs6phTN7A==",
+                            PasswordHash = "AQAAAAEAACcQAAAAENaTjiTgS1EJ3v+xE6FBSzdKMN/FNcZamwEClVS8YRiNB9ShzaNTT1+9YGq8aLZ6ew==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "7f434309-a4d9-48e9-9ebb-8803db794577",
                             TwoFactorEnabled = false,

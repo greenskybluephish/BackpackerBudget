@@ -54,6 +54,7 @@ namespace BackpackingBudget
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MTI4NzcyQDMxMzcyZTMyMmUzMEIxd2huQmxtWERSOW53ZHZDT3VjYXVRUU4renhJOUhpVWR1ZzJaNFpwdW89");
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
