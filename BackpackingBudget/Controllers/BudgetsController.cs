@@ -9,6 +9,7 @@ using BackpackingBudget.Data;
 using BackpackingBudget.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using BackpackingBudget.Models.ViewModels;
 
 namespace BackpackingBudget.Controllers
 {
@@ -118,33 +119,25 @@ namespace BackpackingBudget.Controllers
 
         public async Task<IActionResult> CreateDetails(Budget budget)
         {
+            BudgetViewModel model = new BudgetViewModel();
+            model.Budget = budget;
+            model.BudgetCategories = await _context.BudgetCategory.Where(bc => bc.BudgetId == budget.BudgetId).ToListAsync();
 
-            budget.BudgetCategory = await _context.BudgetCategory.Where(bc => bc.BudgetId == budget.BudgetId).ToListAsync();
-
-            return View(budget);
+            return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> CreateDetails([Bind("Name,BudgetPerDay,BudgetCategoryId,BudgetId")] BudgetCategory[] categories)
+        public async Task<IActionResult> CreateDetails([Bind("Name,BudgetPerDay,BudgetCategoryId,BudgetId")] List<BudgetCategory> categories)
         {
-            try
-            {
                 foreach (var bc in categories)
                 {
-                    var bcToUpdate = await _context.BudgetCategory.Where(b => b.BudgetCategoryId == bc.BudgetCategoryId).SingleOrDefaultAsync();
-                    bcToUpdate.BudgetPerDay = bc.BudgetPerDay;
-                    _context.Update(bcToUpdate);
+
+                    _context.Update(bc);
                 }
                 await _context.SaveChangesAsync();
-                return View("Index");
-            }
-                catch (DbUpdateConcurrencyException)
-
-            {
-                    throw;
-            }
+            return RedirectToAction("Index", "Home");
             
         }
 
