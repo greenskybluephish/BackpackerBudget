@@ -13,8 +13,7 @@
     <div class="col-md-4">
         <form asp-action="CreateDetails">
             @{ for (int i = 0; i < categories.Count; i++)
-                {
-                    @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
+                { 
                     @Html.HiddenFor(m => categories[i].BudgetId)
                     @Html.HiddenFor(m => categories[i].Name)
                     @Html.HiddenFor(m => categories[i].BudgetCategoryId)
@@ -22,9 +21,6 @@
                     <ejs-numerictextbox data-val="true" data-val-number="The field BudgetPerDay must be a number."
        data-val-required="The BudgetPerDay field is required." id="categories_@(i)__BudgetPerDay"
        min="0" name="categories[@(i)].BudgetPerDay" value=@Model.BudgetCategories[i].BudgetPerDay format="c2" height="25px" width="250px" placeholder=@categories[i].Name floatLabelType="Auto"></ejs-numerictextbox>
-
-
-
 
                 }
             }
