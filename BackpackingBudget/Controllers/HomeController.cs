@@ -43,6 +43,11 @@ namespace BackpackingBudget.Controllers
                 return RedirectToAction("Index", "Budgets");
             }
 
+            if (budget.StartDate > DateTime.Now || budget.EndDate < DateTime.Now)
+            {
+                return RedirectToAction("Index", "Budgets");
+            }
+
             var budgetItems = await _context.BudgetItem.Include(b => b.BudgetCategory).ThenInclude(bc => bc.Budget).Where(bi => bi.BudgetCategory.Budget == budget).ToListAsync();
 
             var cost = budgetItems.Select(c => c.Cost).Sum();

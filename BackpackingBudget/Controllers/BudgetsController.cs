@@ -180,8 +180,11 @@ namespace BackpackingBudget.Controllers
             {
                 return NotFound();
             }
+  
+            var budget = await _context.Budget.Include(b=> b.BudgetCategory).Where(b => b.BudgetId == id).FirstOrDefaultAsync();
 
-            var budget = await _context.Budget.FindAsync(id);
+           ViewBag.data = new string[] { "Transportation", "Lodging", "Food", "Activities", "Misc", "Non-Daily Expenses (Untracked)" };
+
             if (budget == null)
             {
                 return NotFound();
@@ -195,7 +198,7 @@ namespace BackpackingBudget.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("BudgetId,Name,UserId,StartDate,EndDate,BudgetAmount,IsActive")] Budget budget)
+        public async Task<IActionResult> Edit(string [] categories, int id, [Bind("BudgetId,Name,UserId,StartDate,EndDate,BudgetAmount,IsActive")] Budget budget)
         {
             if (id != budget.BudgetId)
             {
@@ -211,21 +214,21 @@ namespace BackpackingBudget.Controllers
                 {
                     var currentUser = await GetCurrentUserAsync();
                     budget.UserId = currentUser.Id;
+
                     if (budget.IsActive)
                     {
                         var makeInactive = await _context.Budget.Where(b => b.UserId == budget.UserId && b.IsActive).FirstOrDefaultAsync();
                         if (makeInactive != null)
                         {
                             makeInactive.IsActive = false;
-                            _context.Update(makeInactive);   
+                            _context.Update(makeInactive);
+                            await _context.SaveChangesAsync();
                         }
-                        _context.Update(budget);
-                        await _context.SaveChangesAsync();
-                        return RedirectToAction(nameof(Index));
-                    }
 
-                    _context.Update(budget);
+                    }
+                    _context.Add(budget);
                     await _context.SaveChangesAsync();
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -238,7 +241,29 @@ namespace BackpackingBudget.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                foreach (string category in categories)
+                {
+                    if (!budget.BudgetCategory.Exists(bc => bc.Name == category))
+                    {
+                        BudgetCategory bc = new BudgetCategory()
+                        {
+                            Name = category,
+                            BudgetId = budget.BudgetId,
+                            BudgetPerDay = 0,
+                        };
+                        _context.BudgetCategory.Add(bc);
+                    }
+                }
+                    await _context.SaveChangesAsync();
+
+                BudgetViewModel model = new BudgetViewModel
+                {
+                    Budget = budget,
+                    BudgetCategories = await _context.BudgetCategory.Where(bc => bc.BudgetId == budget.BudgetId).ToListAsync()
+                };
+
+                return View("CreateDetails", model);
+
             }
 
             return View(budget);

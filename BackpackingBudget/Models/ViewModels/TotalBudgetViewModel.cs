@@ -30,12 +30,23 @@ namespace BackpackingBudget.Models.ViewModels
         }
         [DataType(DataType.Currency)]
         public double ActualPerDayAverage()
+
         {
+            if (DaysSinceStart() == 0)
+            {
+                return (double)EstimatedPerDayAverage();
+            }
+
             return (double)AmountSpent / DaysSinceStart();
         }
 
         public double DaysLeftAtCurrentSpendingRate()
         {
+            if (ActualPerDayAverage() == 0)
+            {
+                return (double)TotalDays();
+            }
+
             return AmountRemaining() / ActualPerDayAverage();
         }
 
@@ -59,6 +70,10 @@ namespace BackpackingBudget.Models.ViewModels
         public int DaysSinceStart()
         {
             DateTime today = DateTime.Now;
+            if (today.Day == Budget.StartDate.Day)
+            {
+                return 0;
+            }
             return today.Subtract(Budget.StartDate).Days;
         }
 
