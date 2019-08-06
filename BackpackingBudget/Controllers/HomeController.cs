@@ -38,7 +38,7 @@ namespace BackpackingBudget.Controllers
                 .ThenInclude(bc => bc.BudgetItem)
                 .Where(b => b.User == currentUser && b.IsActive).FirstOrDefaultAsync();
 
-            if (budget == null)
+            if (budget == null || budget.BudgetCategory.Count == 0)
             {
                 return RedirectToAction("Index", "Budgets");
             }

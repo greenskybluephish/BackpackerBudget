@@ -64,6 +64,9 @@ namespace BackpackingBudget.Controllers
             return View();
         }
 
+
+
+
         // POST: Budgets/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -83,12 +86,11 @@ namespace BackpackingBudget.Controllers
             {
                 var currentUser = await GetCurrentUserAsync();
                 budget.UserId = currentUser.Id;
-                _context.Add(budget);
-                await _context.SaveChangesAsync();
+
 
                 if (budget.IsActive)
                 {
-                    var makeInactive = await _context.Budget.Where(b => b.UserId == budget.UserId && budget.IsActive).FirstOrDefaultAsync();
+                    var makeInactive = await _context.Budget.Where(b => b.UserId == budget.UserId && b.IsActive).FirstOrDefaultAsync();
                     if (makeInactive != null)
                     {
                         makeInactive.IsActive = false;
@@ -97,7 +99,10 @@ namespace BackpackingBudget.Controllers
                     }
                     
                 }
-                var postedBudget = await _context.Budget.Where(b => b.BudgetId == budget.BudgetId).FirstOrDefaultAsync();
+                _context.Add(budget);
+                await _context.SaveChangesAsync();
+
+                var postedBudget = await _context.Budget.Where(b => b == budget).FirstOrDefaultAsync();
 
                 foreach (string category in categories)
                 {
@@ -111,25 +116,48 @@ namespace BackpackingBudget.Controllers
                 }
                 await _context.SaveChangesAsync();
 
-                return View("CreateDetails", postedBudget);
+                BudgetViewModel model = new BudgetViewModel();
+                model.Budget = postedBudget;
+                model.BudgetCategories = await _context.BudgetCategory.Where(bc => bc.BudgetId == budget.BudgetId).ToListAsync();
+
+                return View("CreateDetails", model);
             }
 
             return View(budget);
         }
 
-        public async Task<IActionResult> CreateDetails(Budget budget)
+        //public async Task<IActionResult> CreateDetails(Budget budget)
+        //{
+        //    if (budget.BudgetCategory.Count == 0)
+        //    {
+        //        return RedirectToAction("Edit", new { id = budget.BudgetId });
+        //    }
+
+
+        //    BudgetViewModel model = new BudgetViewModel();
+        //    model.Budget = budget;
+        //    model.BudgetCategories = await _context.BudgetCategory.Where(bc => bc.BudgetId == budget.BudgetId).ToListAsync();
+
+        //    return View(model);
+        //}
+
+
+
+        public IActionResult CreateDetails(BudgetViewModel model)
         {
-            BudgetViewModel model = new BudgetViewModel();
-            model.Budget = budget;
-            model.BudgetCategories = await _context.BudgetCategory.Where(bc => bc.BudgetId == budget.BudgetId).ToListAsync();
+            if (model.BudgetCategories == null)
+            {
+                return RedirectToAction("Edit", new { id = model.Budget.BudgetId });
+            }
 
             return View(model);
         }
 
-        [HttpPost]
+
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> CreateDetails([Bind("Name,BudgetPerDay,BudgetCategoryId,BudgetId")] List<BudgetCategory> categories)
+        [HttpPost, ActionName("CreateDetails")]
+        public async Task<IActionResult> CreateDetailsConfirm([Bind("Name,BudgetPerDay,BudgetCategoryId,BudgetId")] List<BudgetCategory> categories)
         {
                 foreach (var bc in categories)
                 {
@@ -137,7 +165,7 @@ namespace BackpackingBudget.Controllers
                     _context.Update(bc);
                 }
                 await _context.SaveChangesAsync();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Budgets");
             
         }
 

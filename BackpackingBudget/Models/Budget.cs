@@ -19,13 +19,13 @@ namespace BackpackingBudget.Models
         [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime StartDate { get; set; }
         [DataType(DataType.Date)]
-        [Display(Name = "Start Date")]
+        [Display(Name = "End Date")]
         [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime? EndDate { get; set; }
 
         [Required]
         [Display(Name = "Budget Amount")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:C}")]
+        [DisplayFormat(DataFormatString = "{0:C}")]
         [DataType(DataType.Currency)]
         public decimal BudgetAmount { get; set; }
         [Required]

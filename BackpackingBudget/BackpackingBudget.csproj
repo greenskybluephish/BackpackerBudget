@@ -6,6 +6,12 @@
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Remove="Views\Expenses\Details.cshtml" />
+    <Content Remove="Views\Expenses\Edit.cshtml" />
+    <Content Remove="Views\Expenses\Index.cshtml" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />

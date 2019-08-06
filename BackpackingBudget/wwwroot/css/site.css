@@ -335,3 +335,13 @@ body {
     /* bug fix - no overlay */
     display: none;
 }
+
+#lookLikeLink {
+    background: none !important;
+    color: inherit !important;
+    border: none !important;
+    padding: 0 !important;
+    font: inherit !important;
+    /*border is optional*/
+    cursor: pointer;
+}

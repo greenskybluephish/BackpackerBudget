@@ -50,9 +50,9 @@
                     @Html.DisplayFor(modelItem => item.IsActive)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "CreateDetails", item) |
+                    <a asp-action="Edit" asp-route-id="@item.BudgetId">Edit Budget</a> |
                     <a asp-action="Details" asp-route-id="@item.BudgetId">Details</a> |
-                    <a asp-action="Delete">Delete Budget</a>
+                    <a asp-action="Delete" asp-route-id="@item.BudgetId">Remove</a>
                 </td>
             </tr>
         }
