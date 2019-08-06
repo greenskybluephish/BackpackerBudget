@@ -9,31 +9,31 @@ namespace BackpackingBudget.Models.ViewModels
     {
         public BudgetCategory BudgetCategory { get; set; }
 
-        public decimal TotalSpent()
-        {
-            return BudgetCategory.BudgetItem.Select(bi => bi.Cost).ToList().Sum();
-        }
+        public decimal TotalSpent { get; set; }
 
-        public int Days { get; set; }
+
+        public int TotalDays { get; set; }
+
+        public int DaysRemaining { get; set; }
 
         public decimal TotalEstimated()
         {
-            return BudgetCategory.BudgetPerDay * Days;
+            return BudgetCategory.BudgetPerDay * TotalDays;
         }
 
         public decimal AmountRemaining()
         {
-            return (TotalSpent() - TotalEstimated());
+            return (TotalEstimated() - TotalSpent );
         }
 
         public decimal AveragePerDay()
         {
-            return TotalSpent() / Days;
+            return TotalSpent / (TotalDays - DaysRemaining);
         }
         
         public decimal AveragePerDayRemaining()
         {
-            return AmountRemaining() / Days;
+            return AmountRemaining() / DaysRemaining;
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BackpackingBudget.Models
 {
@@ -16,11 +16,13 @@ namespace BackpackingBudget.Models
         [Required]
         [DataType(DataType.Date)]
         [Display(Name = "Start Date")]
+        [DisplayFormat(DataFormatString = "{0:MMM dd, yyyy}")]
         public DateTime StartDate { get; set; }
         [DataType(DataType.Date)]
         [Display(Name = "Start Date")]
+        [DisplayFormat(DataFormatString = "{0:MMM dd, yyyy}")]
         public DateTime? EndDate { get; set; }
-        
+
         [Required]
         [Display(Name = "Budget Amount")]
         [DisplayFormat(DataFormatString = "{0:C}")]

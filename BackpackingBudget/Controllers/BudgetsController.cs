@@ -217,31 +217,31 @@ namespace BackpackingBudget.Controllers
         }
 
         // GET: Budgets/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //public async Task<IActionResult> Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var budget = await _context.Budget
-                .Include(b => b.User)
-                .FirstOrDefaultAsync(m => m.BudgetId == id);
-            if (budget == null)
-            {
-                return NotFound();
-            }
+        //    var budget = await _context.Budget
+        //        .Include(b => b.User)
+        //        .FirstOrDefaultAsync(m => m.BudgetId == id);
+        //    if (budget == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(budget);
-        }
+        //    return View(budget);
+        //}
 
         // POST: Budgets/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> Delete(Budget budget)
         {
-            var budget = await _context.Budget.FindAsync(id);
-            _context.Budget.Remove(budget);
+            var budgetToDelete = await _context.Budget.FindAsync(budget.BudgetId);
+            _context.Budget.Remove(budgetToDelete);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

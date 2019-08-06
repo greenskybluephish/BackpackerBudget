@@ -1,6 +1,4 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
-
+﻿
 a.navbar-brand {
   white-space: normal;
   text-align: center;
@@ -83,3 +81,45 @@ body {
     width: 25%
 }
 
+
+
+    .card-control-section.basic_card_layout #weather_card.e-card .e-card-header-caption .e-card-header-title,
+    .card-control-section.basic_card_layout #weather_card.e-card .e-card-header-caption .e-card-sub-title {
+        color: white;
+    }
+
+.highcontrast .card-control-section.basic_card_layout #weather_card.e-card .e-card-header.weather_report .e-card-header-image {
+    border: none;
+}
+
+.card-control-section.basic_card_layout #weather_card.e-card .weather_report .e-card-header-caption {
+    text-align: right;
+}
+
+.card-control-section.basic_card_layout #weather_card.e-card .e-card-header.weather_report .e-card-header-image {
+    background-image: url('../css/Card/rainy.svg');
+}
+
+.card-control-section.basic_card_layout .col-xs-6.col-sm-6.col-lg-6.col-md-6 {
+    width: 100%;
+    padding: 10px;
+}
+
+.card-control-section.basic_card_layout .card-layout {
+    margin: auto;
+    max-width: 400px;
+}
+
+@media (min-width: 870px) {
+    .card-control-section.basic_card_layout .col-xs-6.col-sm-6.col-lg-6.col-md-6 {
+        width: 50%;
+    }
+
+    .card-control-section.basic_card_layout .card-layout {
+        max-width: 870px;
+    }
+}
+
+#basic_card {
+    margin: 10px inherit; 
+}

@@ -1,0 +1,55 @@
+﻿@model BackpackingBudget.Models.ViewModels.TotalBudgetViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+
+
+<h2>@Model.Budget.Name</h2>
+
+<h4>@Html.EditorFor(model => model.Budget.StartDate) - @Html.EditorFor(model => model.Budget.EndDate)</h4>
+
+<div>Total Budget: $@Model.Budget.BudgetAmount </div>
+<div>Total Spent: $@Model.AmountSpent </div>
+<hr/>
+<div>Amount Remaining: $@Model.AmountRemaining() </div>
+<hr />
+<div>Estimated per Day @Model.EstimatedPerDayAverage() </div>
+<div>Actual per day: @Model.ActualPerDayAverage()</div>
+<hr />
+<div>Days Remaining Estimated: @Model.DaysLeft() </div>
+<div>Estimated Return Date: @Html.EditorFor(model => model.EstimatedReturnDate())</div>
+
+
+<div class='row'>
+    <div class="row card-layout">
+        <!-- Basic Card Layout  -->
+        @foreach (var bc in Model.CategoryViewModels)
+        {
+
+            <div class="col-xs-6 col-sm-6 col-lg-4 col-md-4">
+                <div tabindex="0" class="e-card" id="basic_card">
+                    <div class="e-card-header">
+                            <div class="e-card-header-title">@bc.BudgetCategory.Name</div>
+                            <div class="e-card-sub-title">Category Totals</div>
+                        </div>
+
+                    <div>Budget Per Day: $@bc.BudgetCategory.BudgetPerDay </div>
+                    <div>Total Spent on @bc.BudgetCategory.Name: $@bc.TotalSpent </div>
+                    <div>Total Estimated: $@bc.TotalEstimated() </div>
+                    <div>Average per day spent so far: $@bc.AveragePerDay() </div>
+                    <div>Average remaining per day: $@bc.AveragePerDayRemaining() </div>
+                </div>
+
+            </div>
+
+        }
+    </div>
+    </div>
+
+
+
+
+
+

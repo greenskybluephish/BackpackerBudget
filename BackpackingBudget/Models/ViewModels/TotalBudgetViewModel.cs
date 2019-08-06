@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,13 +10,41 @@ namespace BackpackingBudget.Models.ViewModels
     {
         public Budget Budget { get; set; }
 
+        public List<CategoryViewModel> CategoryViewModels { get; set; } = new List<CategoryViewModel>();
+
         public decimal AmountSpent { get; set; }
 
-        public decimal EstimatedPerDayAverage { get; set; }
 
-        public decimal ActualPerDayAverage { get; set; }
+        public decimal AmountRemaining()
+        {
+            return Budget.BudgetAmount - AmountSpent;
+        }
+        [DataType(DataType.Currency)]
+        public decimal EstimatedPerDayAverage()
+        {
+            return Budget.BudgetAmount / TotalDays();
+        }
+        [DataType(DataType.Currency)]
+        public double ActualPerDayAverage()
+        {
+            return (double)AmountSpent / DaysSinceStart();
+        }
 
-        public List<CategoryViewModel> CategoryViewModels { get; set; }
+        public double DaysLeftAtCurrentSpendingRate()
+        {
+            return ActualPerDayAverage() / (TotalDays() - DaysSinceStart());
+        }
+
+        public int DaysLeft() {
+            return (int)Math.Floor(DaysLeftAtCurrentSpendingRate());
+                }
+
+        [DataType(DataType.Date)]
+        public DateTime EstimatedReturnDate()
+        {
+           return DateTime.Now.AddDays(DaysLeftAtCurrentSpendingRate()).Date;
+        }
+
 
         public int TotalDays()
         {
