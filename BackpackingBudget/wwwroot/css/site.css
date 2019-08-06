@@ -330,3 +330,8 @@ body {
     speak: none;
     text-transform: none;
 }
+
+.modal-backdrop {
+    /* bug fix - no overlay */
+    display: none;
+}

@@ -1,33 +1,50 @@
-﻿@model BackpackingBudget.Models.BudgetItem
+﻿@using BackpackingBudget.Models.ViewModels
 
-<h4>BudgetItem</h4>
-<hr />
-<div class="row">
-    <div class="col-md-6">
-        <form asp-action="AddExpense">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="BudgetCategoryId" class="control-label"></label>
-                <select asp-for="BudgetCategoryId" class ="form-control" asp-items="ViewBag.BudgetCategoryId"></select>
+@model BackpackingBudget.Models.ViewModels.TotalBudgetViewModel
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" data-backdrop="false" tabindex="1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <div class="form-group">
-                <label asp-for="Cost" class="control-label"></label>
-                <input asp-for="Cost" class="form-control" />
-                <span asp-validation-for="Cost" class="text-danger"></span>
+            <div class="modal-body">
+                <h4>Add new expense</h4>
+                <hr />
+                <div class="row">
+                    <div class="col-md-6">
+                        <form asp-controller="Expenses" asp-action="Create">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-group">
+                                <label asp-for="@Model.BudgetItem.BudgetCategoryId" class="control-label"></label>
+                                <select asp-for="@Model.BudgetItem.BudgetCategoryId" class="form-control" asp-items="ViewBag.BudgetCategoryId"></select>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="@Model.BudgetItem.Cost" class="control-label"></label>
+                                <input asp-for="@Model.BudgetItem.Cost" class="form-control" />
+                                <span asp-validation-for="@Model.BudgetItem.Cost" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="@Model.BudgetItem.Description" class="control-label"></label>
+                                <input asp-for="@Model.BudgetItem.Description" class="form-control" />
+                                <span asp-validation-for="@Model.BudgetItem.Description" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <input id="btnSave" type="submit" value="Create" class="btn btn-primary" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
+
+
+
 

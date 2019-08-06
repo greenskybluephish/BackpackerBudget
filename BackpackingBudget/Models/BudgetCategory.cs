@@ -15,6 +15,8 @@ namespace BackpackingBudget.Models
         public string Name { get; set; }
         [Required]
         [Display(Name = "Estimated Daily Expense")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:C}")]
+        [DataType(DataType.Currency)]
         public decimal BudgetPerDay { get; set; }
         [Required]
         public int BudgetId { get; set; }

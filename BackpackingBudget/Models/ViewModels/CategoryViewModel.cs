@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,7 +9,7 @@ namespace BackpackingBudget.Models.ViewModels
     public class CategoryViewModel
     {
         public BudgetCategory BudgetCategory { get; set; }
-
+        [DisplayFormat(DataFormatString = "{0:C}")]
         public decimal TotalSpent { get; set; }
 
 
@@ -26,14 +27,19 @@ namespace BackpackingBudget.Models.ViewModels
             return (TotalEstimated() - TotalSpent );
         }
 
-        public decimal AveragePerDay()
+        public string AveragePerDay()
         {
-            return TotalSpent / (TotalDays - DaysRemaining);
+            return (TotalSpent / (TotalDays - DaysRemaining)).ToString("C");
         }
         
-        public decimal AveragePerDayRemaining()
+        public string AveragePerDayRemaining()
         {
-            return AmountRemaining() / DaysRemaining;
+            return (AmountRemaining() / DaysRemaining).ToString("C");
+        }
+
+        public string DecimalToCurrrency(Decimal d)
+        {
+            return d.ToString("C");
         }
     }
 }

@@ -44,7 +44,7 @@ namespace BackpackingBudget.Controllers
         }
 
         // GET: Budgets/Details/5
-        public async Task<IActionResult> Dashboard()
+        public async Task<IActionResult> Details()
         {
             var currentUser = await GetCurrentUserAsync();
             var budget = await _context.Budget.Include(b => b.User).Where(b => b.User == currentUser && b.IsActive).FirstOrDefaultAsync();
@@ -193,7 +193,7 @@ namespace BackpackingBudget.Controllers
                         }
                         _context.Update(budget);
                         await _context.SaveChangesAsync();
-                        return RedirectToAction(nameof(Dashboard));
+                        return RedirectToAction(nameof(Index));
                     }
 
                     _context.Update(budget);
@@ -217,6 +217,7 @@ namespace BackpackingBudget.Controllers
         }
 
         //GET: Budgets/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -238,7 +239,8 @@ namespace BackpackingBudget.Controllers
         // POST: Budgets/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int id)
+        [Authorize]
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var budgetToDelete = await _context.Budget.FindAsync(id);
             _context.Budget.Remove(budgetToDelete);

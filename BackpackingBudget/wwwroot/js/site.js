@@ -15,3 +15,13 @@ document.addEventListener('DOMContentLoaded', function () {
         dockBar.toggle();
     };
 });
+
+$(function () {
+    $('#btnSave').click(function () {
+        $('myModal').modal('hide');
+    });
+});
+
+$('#myModal').on('shown.bs.modal', function () {
+    $('#myInput').trigger('focus')
+})

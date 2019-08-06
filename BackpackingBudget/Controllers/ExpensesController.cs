@@ -7,18 +7,22 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BackpackingBudget.Data;
 using BackpackingBudget.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace BackpackingBudget.Controllers
 {
     public class ExpensesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public ExpensesController(ApplicationDbContext context)
+        public ExpensesController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
+        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
         // GET: Expenses
         public async Task<IActionResult> Index()
         {
@@ -46,14 +50,25 @@ namespace BackpackingBudget.Controllers
         }
 
         // GET: Expenses/Create
-        public IActionResult AddExpense()
-        {
-            ViewData["BudgetCategoryId"] = new SelectList(_context.BudgetCategory, "BudgetCategoryId", "Name");
-            return View();
-        }
+        //public IActionResult AddExpense()
+        //{
 
-        public IActionResult OnGetPartial() =>
-            Partial("_AuthorPartialRP");
+
+        //    ViewData["BudgetCategoryId"] = new SelectList(_context.BudgetCategory, "BudgetCategoryId", "Name");
+        //    return View();
+        //}
+
+        public async Task<IActionResult> AddExpenseAsync()
+        {
+            var currentUser = await GetCurrentUserAsync();
+            var budgetCategories = await _context.BudgetCategory
+    .Where(b => b.Budget.User == currentUser && b.Budget.IsActive).ToListAsync();
+
+            ViewData["BudgetCategoryId"] = new SelectList(budgetCategories, "BudgetCategoryId", "Name");
+
+            return PartialView("AddExpense");
+        }
+            
 
         // POST: Expenses/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
@@ -62,13 +77,22 @@ namespace BackpackingBudget.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("BudgetItemId,BudgetCategoryId,Cost,PurchaseDate,Description")] BudgetItem budgetItem)
         {
+            ModelState.Remove("BudgetItemId");
+            ModelState.Remove("PurchaseDate");
+
             if (ModelState.IsValid)
             {
+                budgetItem.PurchaseDate = DateTime.Now;
                 _context.Add(budgetItem);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Dashboard", "Home");
             }
-            ViewData["BudgetCategoryId"] = new SelectList(_context.BudgetCategory, "BudgetCategoryId", "Name", budgetItem.BudgetCategoryId);
+            var currentUser = await GetCurrentUserAsync();
+            var budgetCategories = await _context.BudgetCategory
+    .Where(b => b.Budget.User == currentUser && b.Budget.IsActive).ToListAsync();
+
+            ViewData["BudgetCategoryId"] = new SelectList(budgetCategories, "BudgetCategoryId", "Name", budgetItem.BudgetCategoryId);
+
             return View(budgetItem);
         }
 

@@ -16,16 +16,17 @@ namespace BackpackingBudget.Models
         [Required]
         [DataType(DataType.Date)]
         [Display(Name = "Start Date")]
-        [DisplayFormat(DataFormatString = "{0:MMM dd, yyyy}")]
+        [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime StartDate { get; set; }
         [DataType(DataType.Date)]
         [Display(Name = "Start Date")]
-        [DisplayFormat(DataFormatString = "{0:MMM dd, yyyy}")]
+        [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime? EndDate { get; set; }
 
         [Required]
         [Display(Name = "Budget Amount")]
-        [DisplayFormat(DataFormatString = "{0:C}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:C}")]
+        [DataType(DataType.Currency)]
         public decimal BudgetAmount { get; set; }
         [Required]
         public virtual ApplicationUser User { get; set; }
@@ -34,6 +35,10 @@ namespace BackpackingBudget.Models
         public bool IsActive { get; set; }
         public virtual List<BudgetCategory> BudgetCategory { get; set; }
 
+        public DateTime EndDateExists()
+        {
+            return (DateTime)EndDate;
+        }
 
     }
 }

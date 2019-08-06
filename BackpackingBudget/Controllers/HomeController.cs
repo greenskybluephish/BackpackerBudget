@@ -11,6 +11,7 @@ using System.Linq;
 using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BackpackingBudget.Controllers
 {
@@ -48,20 +49,7 @@ namespace BackpackingBudget.Controllers
 
             TotalModel.Budget = budget;
             TotalModel.AmountSpent = cost;
-
-
-            //int TotalDays()
-            //{
-            //    var endDate = (DateTime)budget.EndDate;
-
-            //    return endDate.Subtract(budget.StartDate).Days;
-            //}
-
-            //int DaysSinceStart()
-            //{
-            //    DateTime today = DateTime.Now;
-            //    return today.Subtract(budget.StartDate).Days;
-            //}
+            ViewData["BudgetCategoryId"] = new SelectList(budget.BudgetCategory, "BudgetCategoryId", "Name");
 
             foreach (BudgetCategory bc in budget.BudgetCategory)
             {

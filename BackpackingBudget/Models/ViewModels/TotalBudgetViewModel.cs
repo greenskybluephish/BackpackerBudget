@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -12,12 +13,15 @@ namespace BackpackingBudget.Models.ViewModels
 
         public List<CategoryViewModel> CategoryViewModels { get; set; } = new List<CategoryViewModel>();
 
+        public BudgetItem BudgetItem { get; set; }
+        [DisplayFormat(DataFormatString = "{0:C}")]
+        [DataType(DataType.Currency)]
         public decimal AmountSpent { get; set; }
 
 
-        public decimal AmountRemaining()
+        public double  AmountRemaining()
         {
-            return Budget.BudgetAmount - AmountSpent;
+            return (double) (Budget.BudgetAmount - AmountSpent);
         }
         [DataType(DataType.Currency)]
         public decimal EstimatedPerDayAverage()
@@ -32,17 +36,16 @@ namespace BackpackingBudget.Models.ViewModels
 
         public double DaysLeftAtCurrentSpendingRate()
         {
-            return ActualPerDayAverage() / (TotalDays() - DaysSinceStart());
+            return AmountRemaining() / ActualPerDayAverage();
         }
 
         public int DaysLeft() {
             return (int)Math.Floor(DaysLeftAtCurrentSpendingRate());
                 }
 
-        [DataType(DataType.Date)]
-        public DateTime EstimatedReturnDate()
+        public string EstimatedReturnDate()
         {
-           return DateTime.Now.AddDays(DaysLeftAtCurrentSpendingRate()).Date;
+           return DateTime.Now.AddDays(DaysLeftAtCurrentSpendingRate()).Date.ToLongDateString();
         }
 
 
@@ -59,5 +62,14 @@ namespace BackpackingBudget.Models.ViewModels
             return today.Subtract(Budget.StartDate).Days;
         }
 
+        public string DateToString(DateTime d)
+        {
+            return d.ToString("d");
+        }
+
+        public string DoubleToCurrrency(Double d)
+        {
+            return d.ToString("C");
+        }
     }
 }
