@@ -52,7 +52,7 @@
                 <td>
                     @Html.ActionLink("Edit", "CreateDetails", item) |
                     <a asp-action="Details" asp-route-id="@item.BudgetId">Details</a> |
-                    @Html.ActionLink("Delete Budget", "Delete", item)
+                    <a asp-action="Delete">Delete Budget</a>
                 </td>
             </tr>
         }

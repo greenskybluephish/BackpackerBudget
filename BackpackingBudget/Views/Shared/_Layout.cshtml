@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - BackpackingBudget</title>
+    <title>@ViewData["Title"] - Backpacker Budget</title>
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
@@ -15,43 +15,50 @@
               crossorigin="anonymous"
               integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" />
     </environment>
-
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/material.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/site.css" />
     <!-- Syncfusion Essential JS 2 Scripts -->
     <script src="https://cdn.syncfusion.com/ej2/dist/ej2.min.js"></script>
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">BackpackingBudget</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <partial name="_LoginPartial" />
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Budgets" asp-action="Index">Budgets</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Dashboard">Dashboard</a>
-                        </li>
-                    </ul>
-                </div>
+    <div id="wrapper">
+        <div class="col-lg-12 col-sm-12 col-md-12">
+            <ejs-sidebar id="dockSidebar" width="220px" dockSize="72px" enableDock="true"  target=".main-content" created="onCreate">
+                <e-content-template>
+                    <div class="dock">
+                        <ul>
+                            <li class="sidebar-item" id="toggle">
+                                <span class="e-icons expand"></span>
+                                <span class="e-text" title="menu">Menu</span>
+                            </li>
+                            <li class="sidebar-item">
+                                <a asp-controller="Home" asp-action="Index"><span class="e-icons home"></span></a>
+                                <span class="e-text" title="home"><a asp-controller="Home" asp-action="Index">Home</a></span>
+                            </li>
+                            <li class="sidebar-item">
+                                <a asp-controller="Budgets" asp-action="Index"><span class="e-icons info"></span></a>
+                                <span class="e-text" title="info"><a asp-controller="Budgets" asp-action="Index">Budgets</a></span>
+                            </li>
+                            <li class="sidebar-item">
+                                <span class="e-icons settings"><a asp-controller="Home" asp-action="Dashboard"></a></span>
+                                <span class="e-text" title="settings"><a asp-controller="Home" asp-action="Dashboard">Dashboard</a></span>
+                            </li>
+                            <partial name="_LoginPartial" />
+                        </ul>
+                    </div>
+                </e-content-template>
+            </ejs-sidebar>
+
+            <div id="main-content container-fluid col-md-12">
+
+                <main role="main" class="pb-3">
+                    @RenderBody()
+                </main>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+        </div>
     </div>
 
 
@@ -73,9 +80,8 @@
                 integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o">
         </script>
     </environment>
-    <ejs-scripts></ejs-scripts>
     <script src="~/js/site.js" asp-append-version="true"></script>
-
+    <ejs-scripts></ejs-scripts>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

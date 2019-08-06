@@ -238,9 +238,9 @@ namespace BackpackingBudget.Controllers
         // POST: Budgets/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(Budget budget)
+        public async Task<IActionResult> Delete(int id)
         {
-            var budgetToDelete = await _context.Budget.FindAsync(budget.BudgetId);
+            var budgetToDelete = await _context.Budget.FindAsync(id);
             _context.Budget.Remove(budgetToDelete);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
