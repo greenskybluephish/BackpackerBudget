@@ -9,10 +9,12 @@ namespace BackpackingBudget.Models
     {
 
         [Key]
+        [Display(Name = "Category")]
         public int BudgetCategoryId { get; set; }
         [Required]
         public string Name { get; set; }
         [Required]
+        [Display(Name = "Estimated Daily Expense")]
         public decimal BudgetPerDay { get; set; }
         [Required]
         public int BudgetId { get; set; }

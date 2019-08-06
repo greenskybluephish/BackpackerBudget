@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using System.Linq;
 using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BackpackingBudget.Controllers
 {
@@ -25,7 +26,7 @@ namespace BackpackingBudget.Controllers
         }
 
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
-
+        [Authorize]        
         public async Task<IActionResult> Dashboard()
         {
             var currentUser = await GetCurrentUserAsync();
@@ -35,6 +36,12 @@ namespace BackpackingBudget.Controllers
             var budget = await _context.Budget.Include(b => b.BudgetCategory)
                 .ThenInclude(bc => bc.BudgetItem)
                 .Where(b => b.User == currentUser && b.IsActive).FirstOrDefaultAsync();
+
+            if (budget == null)
+            {
+                return RedirectToAction("Index", "Budgets");
+            }
+
             var budgetItems = await _context.BudgetItem.Include(b => b.BudgetCategory).ThenInclude(bc => bc.Budget).Where(bi => bi.BudgetCategory.Budget == budget).ToListAsync();
 
             var cost = budgetItems.Select(c => c.Cost).Sum();

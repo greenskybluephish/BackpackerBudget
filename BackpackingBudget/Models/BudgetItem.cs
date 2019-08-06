@@ -9,6 +9,7 @@ namespace BackpackingBudget.Models
         [Key]
         public int BudgetItemId { get; set; }
         [Required]
+        [Display(Name = "Category")]
         public int BudgetCategoryId { get; set; }
         [Required]
         [DisplayFormat(DataFormatString = "{0:C}")]

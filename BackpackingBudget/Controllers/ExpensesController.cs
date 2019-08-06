@@ -46,11 +46,14 @@ namespace BackpackingBudget.Controllers
         }
 
         // GET: Expenses/Create
-        public IActionResult Create()
+        public IActionResult AddExpense()
         {
             ViewData["BudgetCategoryId"] = new SelectList(_context.BudgetCategory, "BudgetCategoryId", "Name");
             return View();
         }
+
+        public IActionResult OnGetPartial() =>
+            Partial("_AuthorPartialRP");
 
         // POST: Expenses/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 

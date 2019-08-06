@@ -216,24 +216,24 @@ namespace BackpackingBudget.Controllers
             return View(budget);
         }
 
-        // GET: Budgets/Delete/5
-        //public async Task<IActionResult> Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
+        //GET: Budgets/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-        //    var budget = await _context.Budget
-        //        .Include(b => b.User)
-        //        .FirstOrDefaultAsync(m => m.BudgetId == id);
-        //    if (budget == null)
-        //    {
-        //        return NotFound();
-        //    }
+            var budget = await _context.Budget
+                .Include(b => b.User)
+                .FirstOrDefaultAsync(m => m.BudgetId == id);
+            if (budget == null)
+            {
+                return NotFound();
+            }
 
-        //    return View(budget);
-        //}
+            return View(budget);
+        }
 
         // POST: Budgets/Delete/5
         [HttpPost, ActionName("Delete")]

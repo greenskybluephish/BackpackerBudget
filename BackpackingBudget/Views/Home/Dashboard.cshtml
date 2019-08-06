@@ -11,15 +11,26 @@
 <h4>@Model.Budget.StartDate - @Model.Budget.EndDate</h4>
 
 @*<div>Total Budget: $@Model.Budget.BudgetAmount </div>
-<div>Total Spent: $@Model.AmountSpent </div>
-<hr />
-<div>Amount Remaining: $@Model.AmountRemaining() </div>*@
+    <div>Total Spent: $@Model.AmountSpent </div>
+    <hr />
+    <div>Amount Remaining: $@Model.AmountRemaining() </div>*@
 <hr />
 <div>Estimated per Day @Model.EstimatedPerDayAverage() </div>
 <div>Actual per day: @Model.ActualPerDayAverage()</div>
 <hr />
 <div>Days Remaining Estimated: @Model.DaysLeft() </div>
 <div>Estimated Return Date: @Model.EstimatedReturnDate())</div>
+
+@await Html.PartialAsync("~/Views/Expenses/AddExpense.cshtml")
+
+
+
+
+
+
+
+
+
 
 <div>
     <div id="dashboardRow" class="row">
@@ -50,7 +61,7 @@
         </div>
     </div>
 </div>
-
+<hr />
 
 <div class='row'>
     <div class="row card-layout">
