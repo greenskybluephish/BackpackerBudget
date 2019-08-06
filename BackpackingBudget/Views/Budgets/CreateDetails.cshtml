@@ -1,0 +1,35 @@
+﻿
+@model BackpackingBudget.Models.ViewModels.BudgetViewModel
+
+@{
+    ViewData["Title"] = "CreateDetails";
+}
+
+@{var categories = Model.BudgetCategories; }
+
+<h4>BudgetCategory</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateDetails">
+            @{ for (int i = 0; i < categories.Count; i++)
+                { 
+                    @Html.HiddenFor(m => categories[i].BudgetId)
+                    @Html.HiddenFor(m => categories[i].Name)
+                    @Html.HiddenFor(m => categories[i].BudgetCategoryId)
+
+                    <ejs-numerictextbox data-val="true" data-val-number="The field BudgetPerDay must be a number."
+       data-val-required="The BudgetPerDay field is required." id="categories_@(i)__BudgetPerDay"
+       min="0" name="categories[@(i)].BudgetPerDay" value=@Model.BudgetCategories[i].BudgetPerDay format="c2" height="25px" width="250px" placeholder=@categories[i].Name floatLabelType="Auto"></ejs-numerictextbox>
+
+                }
+            }
+            <ejs-button id="btn" content="Submit"></ejs-button>
+        </form>
+        </div>
+       
+
+    </div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

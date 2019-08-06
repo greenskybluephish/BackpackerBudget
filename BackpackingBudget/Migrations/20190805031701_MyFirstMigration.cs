@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BackpackingBudget.Migrations
 {
-    public partial class lasttime : Migration
+    public partial class MyFirstMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -225,7 +225,7 @@ namespace BackpackingBudget.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "00000000-ffff-ffff-ffff-ffffffffffff", 0, "5271836f-ae86-42de-b76d-e229226cdb98", "admin@admin.com", true, "Brian", "Jobe", false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAEAACcQAAAAEIVudsfw/s92YsAeWbaxxKUqs9us9HWm47bgChVLiqqYIAhW+KeRVx81YTs6phTN7A==", null, false, "7f434309-a4d9-48e9-9ebb-8803db794577", false, "admin@admin.com" });
+                values: new object[] { "00000000-ffff-ffff-ffff-ffffffffffff", 0, "3acf40c4-bb8d-4a30-bd87-49a920919099", "admin@admin.com", true, "Brian", "Jobe", false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAEAACcQAAAAENaTjiTgS1EJ3v+xE6FBSzdKMN/FNcZamwEClVS8YRiNB9ShzaNTT1+9YGq8aLZ6ew==", null, false, "7f434309-a4d9-48e9-9ebb-8803db794577", false, "admin@admin.com" });
 
             migrationBuilder.InsertData(
                 table: "Budget",

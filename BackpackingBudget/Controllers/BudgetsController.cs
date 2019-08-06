@@ -9,6 +9,7 @@ using BackpackingBudget.Data;
 using BackpackingBudget.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using BackpackingBudget.Models.ViewModels;
 
 namespace BackpackingBudget.Controllers
 {
@@ -31,7 +32,15 @@ namespace BackpackingBudget.Controllers
         {
             var currentUser = await GetCurrentUserAsync();
             var budgets = await _context.Budget.Include(b => b.User).Where(b => b.User == currentUser).ToListAsync();
-            return View(budgets);
+            if (budgets != null)
+            {
+                return View(budgets);
+            }
+            else
+            {
+                List<Budget> empty = new List<Budget>();
+                return View(empty);
+            }
         }
 
         // GET: Budgets/Details/5
@@ -51,7 +60,7 @@ namespace BackpackingBudget.Controllers
         // GET: Budgets/Create
         public IActionResult Create()
         {
-
+            ViewBag.data = new string[] { "Transportation", "Lodging", "Food", "Activities", "Misc", "Non-Daily Expenses (Untracked)" };
             return View();
         }
 
@@ -61,8 +70,13 @@ namespace BackpackingBudget.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Create([Bind("Name,UserId,StartDate,EndDate,BudgetAmount,IsActive")] Budget budget)
+        public async Task<IActionResult> Create(string [] categories, [Bind("Name,UserId,StartDate,EndDate,BudgetAmount,IsActive")] Budget budget)
         {
+            if (categories.Length == 0 )
+            {
+                return View(budget);
+            }
+
             ModelState.Remove("User");
             ModelState.Remove("UserId");
             if (ModelState.IsValid)
@@ -81,17 +95,54 @@ namespace BackpackingBudget.Controllers
                         _context.Update(makeInactive);
                         await _context.SaveChangesAsync();
                     }
-                    return RedirectToAction(nameof(Dashboard));
+                    
                 }
-                else
+                var postedBudget = await _context.Budget.Where(b => b.BudgetId == budget.BudgetId).FirstOrDefaultAsync();
+
+                foreach (string category in categories)
                 {
-                    return RedirectToAction(nameof(Index));
+                    BudgetCategory bc = new BudgetCategory()
+                    {
+                        Name = category,
+                        BudgetId = postedBudget.BudgetId,
+                        BudgetPerDay = 0,
+                    };
+                    _context.BudgetCategory.Add(bc);
                 }
-                
+                await _context.SaveChangesAsync();
+
+                return View("CreateDetails", postedBudget);
             }
 
             return View(budget);
         }
+
+        public async Task<IActionResult> CreateDetails(Budget budget)
+        {
+            BudgetViewModel model = new BudgetViewModel();
+            model.Budget = budget;
+            model.BudgetCategories = await _context.BudgetCategory.Where(bc => bc.BudgetId == budget.BudgetId).ToListAsync();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public async Task<IActionResult> CreateDetails([Bind("Name,BudgetPerDay,BudgetCategoryId,BudgetId")] List<BudgetCategory> categories)
+        {
+                foreach (var bc in categories)
+                {
+
+                    _context.Update(bc);
+                }
+                await _context.SaveChangesAsync();
+            return RedirectToAction("Index", "Home");
+            
+        }
+
+
+
 
         // GET: Budgets/Edit/5
         [Authorize]
@@ -166,31 +217,31 @@ namespace BackpackingBudget.Controllers
         }
 
         // GET: Budgets/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //public async Task<IActionResult> Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var budget = await _context.Budget
-                .Include(b => b.User)
-                .FirstOrDefaultAsync(m => m.BudgetId == id);
-            if (budget == null)
-            {
-                return NotFound();
-            }
+        //    var budget = await _context.Budget
+        //        .Include(b => b.User)
+        //        .FirstOrDefaultAsync(m => m.BudgetId == id);
+        //    if (budget == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(budget);
-        }
+        //    return View(budget);
+        //}
 
         // POST: Budgets/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var budget = await _context.Budget.FindAsync(id);
-            _context.Budget.Remove(budget);
+            var budgetToDelete = await _context.Budget.FindAsync(id);
+            _context.Budget.Remove(budgetToDelete);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

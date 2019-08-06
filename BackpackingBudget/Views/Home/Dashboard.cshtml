@@ -1,0 +1,81 @@
+﻿@model BackpackingBudget.Models.ViewModels.TotalBudgetViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+
+
+<h2>@Model.Budget.Name</h2>
+
+<h4>@Model.Budget.StartDate - @Model.Budget.EndDate</h4>
+
+@*<div>Total Budget: $@Model.Budget.BudgetAmount </div>
+<div>Total Spent: $@Model.AmountSpent </div>
+<hr />
+<div>Amount Remaining: $@Model.AmountRemaining() </div>*@
+<hr />
+<div>Estimated per Day @Model.EstimatedPerDayAverage() </div>
+<div>Actual per day: @Model.ActualPerDayAverage()</div>
+<hr />
+<div>Days Remaining Estimated: @Model.DaysLeft() </div>
+<div>Estimated Return Date: @Model.EstimatedReturnDate())</div>
+
+<div>
+    <div id="dashboardRow" class="row">
+
+        <div class="col-xs-8 col-xl-4 col-lg-4 col-md-4 col-sm-6 card-container">
+            <div class="e-card card">
+                <div class="e-card-content">
+                    <h3 class="card-value" id="totalBudget">$@Model.Budget.BudgetAmount </h3>
+                    <span class="card-text">Budget</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-8 col-xl-4 col-lg-4 col-md-4 col-sm-6 card-container">
+            <div class="e-card card">
+                <div class="e-card-content">
+                    <h3 class="card-value" id="totalExpense">$@Model.AmountSpent </h3>
+                    <span class="card-text">Total Spent</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-8 col-xl-4 col-lg-4 col-md-4 col-sm-6 card-container">
+            <div class="e-card card">
+                <div class="e-card-content">
+                    <h3 class="card-value" id="balance">$@Model.AmountRemaining() </h3>
+                    <span class="card-text">Current Balance</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class='row'>
+    <div class="row card-layout">
+        <!-- Basic Card Layout  -->
+        @foreach (var bc in Model.CategoryViewModels)
+        {
+            <div class="col-xs-8 col-sm-8 col-lg-6 col-md-6">
+                <div tabindex="0" class="e-card" id="basic_card">
+                    <div class="e-card-header">
+                        <h5 class="e-card-header-title">@bc.BudgetCategory.Name Totals</h5>
+                    </div>
+
+                    <div>Budget Per Day: $@bc.BudgetCategory.BudgetPerDay </div>
+                    <div>Total Spent on @bc.BudgetCategory.Name: $@bc.TotalSpent </div>
+                    <div>Total Estimated: $@bc.TotalEstimated() </div>
+                    <div>Average per day spent so far: $@bc.AveragePerDay() </div>
+                    <div>Average remaining per day: $@bc.AveragePerDayRemaining() </div>
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
+
+
+
+
+
