@@ -147,7 +147,7 @@ namespace BackpackingBudget.Controllers
 
         public IActionResult CreateDetails(BudgetViewModel model)
         {
-            if (model.BudgetCategories == null)
+            if (model.BudgetCategories == null || model.BudgetCategories.Count == 0)
             {
                 return RedirectToAction("Edit", new { id = model.Budget.BudgetId });
             }
@@ -172,8 +172,6 @@ namespace BackpackingBudget.Controllers
         }
 
 
-
-
         // GET: Budgets/Edit/5
         [Authorize]
         public async Task<IActionResult> Edit(int? id)
@@ -182,8 +180,8 @@ namespace BackpackingBudget.Controllers
             {
                 return NotFound();
             }
-  
-            var budget = await _context.Budget.Include(b=> b.BudgetCategory).Where(b => b.BudgetId == id).FirstOrDefaultAsync();
+
+            var budget = await _context.Budget.FindAsync(id);
 
            ViewBag.data = new string[] { "Transportation", "Lodging", "Food", "Activities", "Misc", "Non-Daily Expenses (Untracked)" };
 
@@ -199,35 +197,34 @@ namespace BackpackingBudget.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string [] categories, int id, [Bind("BudgetId,Name,StartDate,EndDate,BudgetAmount,IsActive")] Budget budget)
+        public async Task<IActionResult> Edit(int id, string[] categories, [Bind("BudgetId, UserId, Name,StartDate,EndDate,BudgetAmount,IsActive")] Budget budget)
         {
             if (id != budget.BudgetId)
             {
                 return NotFound();
             }
-
+            
             ModelState.Remove("User");
-            ModelState.Remove("UserId");
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var currentUser = await GetCurrentUserAsync();
-                    budget.UserId = currentUser.Id;
+                    _context.Update(budget);
+                    await _context.SaveChangesAsync();
 
                     if (budget.IsActive)
                     {
-                        var makeInactive = await _context.Budget.Where(b => b.UserId == budget.UserId && b.IsActive).FirstOrDefaultAsync();
-                        if (makeInactive != null && makeInactive != budget)
+                        var makeInactive = await _context.Budget.Where(b => b.IsActive && b.BudgetId != budget.BudgetId).FirstOrDefaultAsync();
+                        if (makeInactive != null)
                         {
                             makeInactive.IsActive = false;
                             _context.Update(makeInactive);
                         }
 
                     }
-                    _context.Add(budget);
-                    await _context.SaveChangesAsync();
+
+
 
                 }
                 catch (DbUpdateConcurrencyException)

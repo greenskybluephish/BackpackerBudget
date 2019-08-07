@@ -12,6 +12,7 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="BudgetId" />
+            <input type="hidden" asp-for="UserId" />
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
@@ -35,7 +36,7 @@
             <div class="control-section">
                 <div class="control-wrapper">
                     <div style="padding-top:15px; padding-bottom: 15px;">
-                        <ejs-multiselect id="categories" placeholder="Select Categories for your budget" dataSource="@ViewBag.data" allowCustomValue="true" mode="Box">
+                        <ejs-multiselect id="categories" placeholder="Select Categories for your budget" dataSource="@ViewBag.data" allowCustomValue="true" mode="Default">
                             <e-multiselect-fields></e-multiselect-fields>
                         </ejs-multiselect>
                     </div>
