@@ -9,6 +9,7 @@ a.navbar-brand {
 -------------------------------------------------- */
 html {
     font-size: 14px;
+    color: rgba(0, 0, 0, 0.54) !important;
 }
 
 @media (min-width: 768px) {
@@ -95,13 +96,50 @@ body {
     border: none;
 }
 
-.card-control-section.basic_card_layout #weather_card.e-card .weather_report .e-card-header-caption {
-    text-align: right;
+.col-xs-10.col-xl-4.col-lg-6.col-md-8.col-sm-10.card-container {
+    margin-bottom: 10px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 0.75 !important;
+
 }
 
-.card-control-section.basic_card_layout #weather_card.e-card .e-card-header.weather_report .e-card-header-image {
-    background-image: url('../css/Card/rainy.svg');
+.col-xs-8.col-xl-6.col-lg-6.col-md-8.col-sm-8.card-container {
+    margin-bottom: 10px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 0.75 !important;
 }
+
+    .col-xs-10.col-xl-4.col-lg-6.col-md-8.col-sm-10.card-container .e-card .e-card-content {
+        padding: 15px !important;
+
+    }
+col-xs-8.col-xl-3.col-lg-3.col-md-6.col-sm-6.card-container {
+    margin-bottom: 10px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 0.75 !important;
+}
+
+        col-xs-8.col-xl-3.col-lg-3.col-md-6.col-sm-6.card-container .e-card .e-card-content h3,span {
+            text-align:center;
+        }
+
+col-xs-8.col-xl-5.col-lg-6.col-md-8.col-sm-8 h1 {
+    margin-bottom: 10px !important;
+    color: rgba(0, 0, 0, 0.54) !important;
+}
+
+col-xs-8.col-xl-5.col-lg-6.col-md-8.col-sm-8 h3 {
+    margin-bottom: 15px !important;
+    color: rgba(0, 0, 0, 0.54) !important;
+}
+
+
 
 .card-control-section.basic_card_layout .col-xs-6.col-sm-6.col-lg-6.col-md-6 {
     width: 100%;
@@ -344,4 +382,13 @@ body {
     font: inherit !important;
     /*border is optional*/
     cursor: pointer;
+}
+
+.pb-3 {
+    margin-left: 10px !important;
+    margin-top: 15px !important;
+}
+
+.pb-3 .row {
+    justify-content: center !important;
 }

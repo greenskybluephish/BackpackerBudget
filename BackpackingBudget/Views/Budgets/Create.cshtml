@@ -12,69 +12,75 @@
 
 <h2> New Budget</h2>
 <hr />
+<form class="col s12" asp-action="Create">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="col-lg-12 control-section">
-                <div class="content-wrapper">
-                    <div class="row">
-                        <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6">
-                            <ejs-textbox id="Name" placeholder="Trip Name" floatLabelType="Auto"></ejs-textbox>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-6 col-sm-6 col-lg-4 col-md-4">
-                            <ejs-datepicker id="StartDate" name="StartDate" ejs-for="@Model.StartDate" min="@ViewBag.minDate" placeholder="Choose a Start Date"></ejs-datepicker>
-                            <div id="errorMessage">
-                                <span asp-validation-for="StartDate"></span>
-                            </div>
-                        </div>
-                        <div class="col-xs-6 col-sm-6 col-lg-4 col-md-4">
-                            <ejs-datepicker id="EndDate" name="EndDate" ejs-for="@Model.EndDate" min="@ViewBag.minDate" placeholder="Choose an End Date"></ejs-datepicker>
-                            <div id="errorMessage">
-                                <span asp-validation-for="EndDate"></span>
-                            </div>
-                        </div>
-                    </div>
-                            <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6">
-                                <div class="control-label">
-                                    Budget Amount
-                                    <ejs-numerictextbox width="400px" id="BudgetAmount" min="0" format="c2" value="500" step="50" Type="text"></ejs-numerictextbox>
-                                </div>
-                            </div>
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col s12">
+                <ejs-textbox id="Name" placeholder="Trip Name" floatLabelType="Auto"></ejs-textbox>
+            </div>
 
-                            <div class="row">
-                                <div class="control-section">
-                                    <div class="col-xs-6 col-sm-6 col-lg-6 col-md-6">
-                                        <div style="padding-top:15px; padding-bottom: 15px;">
-                                            <ejs-multiselect id="categories" placeholder="Select Categories for your budget" width="400px" dataSource="@ViewBag.data" allowCustomValue="true" mode="Default">
-                                                <e-multiselect-fields></e-multiselect-fields>
-                                            </ejs-multiselect>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div style="padding-top:15px; padding-bottom: 15px;">
-                                    <ejs-checkbox id="IsActive" checked="false" label="Set as active budget" change="onChange"></ejs-checkbox>
-                                </div>
-
-
-
-                                <div class="row" style="padding-top:15px; padding-bottom: 15px;">
-                                    <div id="submitbutton">
-                                        <ejs-button ac id="backButton" content="Cancel"><e-content-template><a asp-action="Index"></a></e-content-template> </ejs-button>
-
-                                    </div>
-                                    <div class="col-1"></div>
-                                    <div id="submitbutton">
-                                        <ejs-button id="submitButton" content="Submit"></ejs-button>
-
-                                    </div>
-                                </div>
-                            </div>
+            <div class="col s12">
+                <div class="control-label">
+                    Budget Amount
+                    <ejs-numerictextbox id="BudgetAmount" min="0" format="c2" value="500" step="50" Type="text"></ejs-numerictextbox>
                 </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s12">
+                <ejs-datepicker id="StartDate" name="StartDate" ejs-for="@Model.StartDate" min="@ViewBag.minDate" placeholder="Choose a Start Date"></ejs-datepicker>
+                <div id="errorMessage">
+                    <span asp-validation-for="StartDate"></span>
+                </div>
+            </div>
+            <div class="col s12">
+                <ejs-datepicker id="EndDate" name="EndDate" ejs-for="@Model.EndDate" min="@ViewBag.minDate" placeholder="Choose an End Date"></ejs-datepicker>
+                <div id="errorMessage">
+                    <span asp-validation-for="EndDate"></span>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="control-section">
+                <div class="col-xs-12 col-sm-12">
+                    <div style="padding-top:15px; padding-bottom: 15px;">
+                        <ejs-multiselect id="categories" placeholder="Select Categories for your budget" width="400px" dataSource="@ViewBag.data" allowCustomValue="true" mode="Default">
+                            <e-multiselect-fields></e-multiselect-fields>
+                        </ejs-multiselect>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s12">
+                Set as active budget
+                <div class="input-field inline">
+                    <div style="padding-top:15px; padding-bottom: 15px;">
+                        <ejs-checkbox id="IsActive" checked="false" change="onChange"></ejs-checkbox>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+                    <div class="row" style="padding-top:15px; padding-bottom: 15px;">
+                        <div id="submitbutton">
+                            <ejs-button ac id="backButton" content="Cancel"><e-content-template><a asp-action="Index"></a></e-content-template> </ejs-button>
+
+                        </div>
+                        <div class="col-1"></div>
+                        <div id="submitbutton">
+                            <ejs-button id="submitButton" content="Submit"></ejs-button>
+
+                        </div>
+                    </div>
+                </div>
+
 </form>
 
 
