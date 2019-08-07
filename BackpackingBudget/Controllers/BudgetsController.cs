@@ -60,6 +60,8 @@ namespace BackpackingBudget.Controllers
         // GET: Budgets/Create
         public IActionResult Create()
         {
+
+            ViewBag.minDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
             ViewBag.data = new string[] { "Transportation", "Lodging", "Food", "Activities", "Misc", "Non-Daily Expenses (Untracked)" };
             return View();
         }
@@ -195,10 +197,9 @@ namespace BackpackingBudget.Controllers
         // POST: Budgets/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string [] categories, int id, [Bind("BudgetId,Name,UserId,StartDate,EndDate,BudgetAmount,IsActive")] Budget budget)
+        public async Task<IActionResult> Edit(string [] categories, int id, [Bind("BudgetId,Name,StartDate,EndDate,BudgetAmount,IsActive")] Budget budget)
         {
             if (id != budget.BudgetId)
             {
@@ -218,11 +219,10 @@ namespace BackpackingBudget.Controllers
                     if (budget.IsActive)
                     {
                         var makeInactive = await _context.Budget.Where(b => b.UserId == budget.UserId && b.IsActive).FirstOrDefaultAsync();
-                        if (makeInactive != null)
+                        if (makeInactive != null && makeInactive != budget)
                         {
                             makeInactive.IsActive = false;
                             _context.Update(makeInactive);
-                            await _context.SaveChangesAsync();
                         }
 
                     }
@@ -241,9 +241,11 @@ namespace BackpackingBudget.Controllers
                         throw;
                     }
                 }
+                var budgetCategories = await _context.BudgetCategory.Where(bc => bc.BudgetId == budget.BudgetId).ToListAsync();
+
                 foreach (string category in categories)
                 {
-                    if (!budget.BudgetCategory.Exists(bc => bc.Name == category))
+                    if (!budgetCategories.Exists(bc => bc.Name == category))
                     {
                         BudgetCategory bc = new BudgetCategory()
                         {

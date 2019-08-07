@@ -25,3 +25,7 @@ $(function () {
 $('#myModal').on('shown.bs.modal', function () {
     $('#myInput').trigger('focus')
 })
+
+function onChange(args) {
+    this.label = 'CheckBox: ' + args.checked;
+}
