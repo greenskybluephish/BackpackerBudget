@@ -129,35 +129,35 @@ namespace BackpackingBudget.Controllers
         //    return View(budgetCategory);
         //}
 
-        //// GET: BudgetCategories/Delete/5
-        //public async Task<IActionResult> Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
+        // GET: BudgetCategories/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-        //    var budgetCategory = await _context.BudgetCategory
-        //        .Include(b => b.Budget)
-        //        .FirstOrDefaultAsync(m => m.BudgetCategoryId == id);
-        //    if (budgetCategory == null)
-        //    {
-        //        return NotFound();
-        //    }
+            var budgetCategory = await _context.BudgetCategory
+                .Include(b => b.Budget)
+                .FirstOrDefaultAsync(m => m.BudgetCategoryId == id);
+            if (budgetCategory == null)
+            {
+                return NotFound();
+            }
 
-        //    return View(budgetCategory);
-        //}
+            return View(budgetCategory);
+        }
 
-        //// POST: BudgetCategories/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> DeleteConfirmed(int id)
-        //{
-        //    var budgetCategory = await _context.BudgetCategory.FindAsync(id);
-        //    _context.BudgetCategory.Remove(budgetCategory);
-        //    await _context.SaveChangesAsync();
-        //    return RedirectToAction(nameof(Index));
-        //}
+        // POST: BudgetCategories/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var budgetCategory = await _context.BudgetCategory.FindAsync(id);
+            _context.BudgetCategory.Remove(budgetCategory);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
 
         private bool BudgetCategoryExists(int id)
         {
