@@ -56,24 +56,24 @@
                             </div>
 
                             <div class="row">
-                                <ejs-checkbox id="IsActive" checked="false" label="Set as active budget" change="onChange"></ejs-checkbox>
-                            </div>
-
-                            <hr />
-
-
-                            <div class="row">
-                                <div id="submitbutton">
-                                    <ejs-button ac id="backButton" content="Back to List"><e-content-template><a asp-action="Index"></a></e-content-template> </ejs-button>
-
+                                <div style="padding-top:15px; padding-bottom: 15px;">
+                                    <ejs-checkbox id="IsActive" checked="false" label="Set as active budget" change="onChange"></ejs-checkbox>
                                 </div>
 
-                                <div id="submitbutton">
-                                    <ejs-button id="submitButton" content="Submit"></ejs-button>
 
+
+                                <div class="row" style="padding-top:15px; padding-bottom: 15px;">
+                                    <div id="submitbutton">
+                                        <ejs-button ac id="backButton" content="Cancel"><e-content-template><a asp-action="Index"></a></e-content-template> </ejs-button>
+
+                                    </div>
+                                    <div class="col-1"></div>
+                                    <div id="submitbutton">
+                                        <ejs-button id="submitButton" content="Submit"></ejs-button>
+
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                 </div>
 </form>
 

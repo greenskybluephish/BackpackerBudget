@@ -12,5 +12,11 @@ namespace BackpackingBudget.Models.ViewModels
         public List<BudgetCategory> BudgetCategories { get; set; }
 
         public BudgetCategory BudgetCategory { get; set; }
+
+        public int BudgetPerDay()
+        {
+            var bpd = Budget.BudgetAmount/ (Budget.EndDateExists().Subtract(Budget.StartDate).Days);
+            return (int)Math.Floor(bpd);
+        }
     }
 }

@@ -29,3 +29,60 @@ $('#myModal').on('shown.bs.modal', function () {
 function onChange(args) {
     this.label = 'CheckBox: ' + args.checked;
 }
+
+
+$("#StartDate, #EndDate").datepicker();
+
+$("#EndDate").change(function () {
+    var startDate = document.getElementById("StartDate").value;
+    var endDate = document.getElementById("EndDate").value;
+
+    if ((Date.parse(endDate) <= Date.parse(startDate))) {
+        alert("End date should be greater than Start date");
+        document.getElementById("EndDate").value = "";
+    }
+});
+
+//<script>
+//    $(document).ready(function(){
+//        $("#some-form").validate({
+
+//            rules: {
+//                TextBox1: {
+//                    required: true,
+//                    number: true,
+//                    min: 0,
+//                    max: 100,
+//                },
+//                TextBox2: {
+//                    required: true,
+//                    number: true,
+//                    min: 0,
+//                    max: 100,
+//                },
+//            TextBox3: {
+//                    required: true,
+//                    number: true,
+//                    min: 0,
+//                    max: 100,
+//                },
+//            TextBox4: {
+//                    required: true,
+//                    number: true,
+//                    min: 0,
+//                    max: 100,
+//                }
+
+//            },
+//            submitHandler: function (form) {
+//                var total = parseInt($("#TextBox1").val()) + parseInt($("#TextBox2").val()) + parseInt($("#TextBox3").val()) + parseInt($("#TextBox4").val());
+//                if (total != 100) {
+//                    $(".error").html("Your total must sum to 100.")
+//                    return false;
+//                } else form.submit();
+//            }
+
+//        });
+//    });
+    
+//</script>

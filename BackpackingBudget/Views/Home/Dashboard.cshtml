@@ -70,7 +70,7 @@
             <div class="e-card card">
                 <div class="e-card-content">
                     <h3 class="card-value" id="returnDate">@Model.EstimatedReturnDate()</h3>
-                    <span class="card-text">Estimated Return Date</span>
+                    <span class="card-text">Return date at current spending rate</span>
                 </div>
             </div>
         </div>
@@ -95,11 +95,11 @@
                         </div>
                     </div>
                     <ul>
-                        <li>Budget Per Day: @bc.BudgetCategory.BudgetPerDay.ToString("C") </li>
+                        <li>Original Budget: @bc.BudgetCategory.BudgetPerDay.ToString("C") per day</li>
                         <li>Total Spent on @bc.BudgetCategory.Name: @bc.TotalSpent.ToString("C") </li>
-                        <li>Total Estimated: @bc.TotalEstimated().ToString("C") </li>
-                        <li>Average per day spent so far: @bc.AveragePerDay() </li>
-                        <li>Average remaining per day: @bc.AveragePerDayRemaining() </li>
+                        @*<li>Total Estimated: @bc.TotalEstimated().ToString("C") </li>*@
+                        <li>Daily average so far: @bc.AveragePerDay() </li>
+                        <li>Daily average remaining: @bc.AveragePerDayRemaining() </li>
                     </ul>
                 </div>
             </div>

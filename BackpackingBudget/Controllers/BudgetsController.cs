@@ -44,18 +44,19 @@ namespace BackpackingBudget.Controllers
         }
 
         // GET: Budgets/Details/5
-        public async Task<IActionResult> Details()
+        public async Task<IActionResult> Details(int? id)
         {
             var currentUser = await GetCurrentUserAsync();
-            var budget = await _context.Budget.Include(b => b.User).Where(b => b.User == currentUser && b.IsActive).FirstOrDefaultAsync();
+            var budget = await _context.Budget.Include(b => b.BudgetCategory).FirstOrDefaultAsync();
 
-            if (budget == null)
+            if (budget == null || budget.UserId != currentUser.Id)
             {
                 return RedirectToAction("Index");
             }
 
             return View(budget);
         }
+
 
         // GET: Budgets/Create
         public IActionResult Create()
@@ -65,8 +66,6 @@ namespace BackpackingBudget.Controllers
             ViewBag.data = new string[] { "Transportation", "Lodging", "Food", "Activities", "Misc", "Non-Daily Expenses (Untracked)" };
             return View();
         }
-
-
 
 
         // POST: Budgets/Create
@@ -99,7 +98,7 @@ namespace BackpackingBudget.Controllers
                         _context.Update(makeInactive);
                         await _context.SaveChangesAsync();
                     }
-                    
+
                 }
                 _context.Add(budget);
                 await _context.SaveChangesAsync();
