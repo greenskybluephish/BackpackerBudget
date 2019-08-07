@@ -9,6 +9,7 @@ a.navbar-brand {
 -------------------------------------------------- */
 html {
     font-size: 14px;
+    color: rgba(0, 0, 0, 0.54) !important;
 }
 
 @media (min-width: 768px) {
@@ -95,13 +96,50 @@ body {
     border: none;
 }
 
-.card-control-section.basic_card_layout #weather_card.e-card .weather_report .e-card-header-caption {
-    text-align: right;
+.col-xs-10.col-xl-4.col-lg-6.col-md-8.col-sm-10.card-container {
+    margin-bottom: 10px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 0.75 !important;
+
 }
 
-.card-control-section.basic_card_layout #weather_card.e-card .e-card-header.weather_report .e-card-header-image {
-    background-image: url('../css/Card/rainy.svg');
+.col-xs-8.col-xl-6.col-lg-6.col-md-8.col-sm-8.card-container {
+    margin-bottom: 10px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 0.75 !important;
 }
+
+    .col-xs-10.col-xl-4.col-lg-6.col-md-8.col-sm-10.card-container .e-card .e-card-content {
+        padding: 15px !important;
+
+    }
+col-xs-8.col-xl-3.col-lg-3.col-md-6.col-sm-6.card-container {
+    margin-bottom: 10px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 0.75 !important;
+}
+
+        col-xs-8.col-xl-3.col-lg-3.col-md-6.col-sm-6.card-container .e-card .e-card-content h3,span {
+            text-align:center;
+        }
+
+col-xs-8.col-xl-5.col-lg-6.col-md-8.col-sm-8 h1 {
+    margin-bottom: 10px !important;
+    color: rgba(0, 0, 0, 0.54) !important;
+}
+
+col-xs-8.col-xl-5.col-lg-6.col-md-8.col-sm-8 h3 {
+    margin-bottom: 15px !important;
+    color: rgba(0, 0, 0, 0.54) !important;
+}
+
+
 
 .card-control-section.basic_card_layout .col-xs-6.col-sm-6.col-lg-6.col-md-6 {
     width: 100%;
@@ -127,42 +165,6 @@ body {
     margin: 10px inherit;
 }
 
-
-/* header-section styles */
-#header-section.main-header {
-    border-bottom: 1px solid #d2d6de;
-    height: 55px;
-    min-height: 55px;
-    max-height: 55px;
-    background: #1c86c8;
-    color: #fff;
-}
-
-#header-section .header-style {
-    line-height: 40px;
-    height: 55px;
-    padding: 8px;
-    list-style: none;
-    text-align: center;
-    font-size: 18px;
-}
-
-#header-section .border-left {
-    border-left: 1px solid #d2d6de;
-    width: 10em;
-}
-
-#header-section .float-left {
-    float: left;
-    padding-right: 0px;
-}
-
-#header-section .icon-menu {
-    width: 40px;
-    cursor: pointer;
-}
-
-/*end of header-section styles */
 /* Content area styles */
 
 .title {
@@ -329,4 +331,49 @@ body {
     line-height: 1;
     speak: none;
     text-transform: none;
+}
+
+.modal-backdrop {
+    /* bug fix - no overlay */
+    display: none;
+}
+
+#lookLikeLink {
+    background: none !important;
+    color: inherit !important;
+    border: none !important;
+    padding: 0 !important;
+    font: inherit !important;
+    /*border is optional*/
+    cursor: pointer;
+}
+
+.pb-3 {
+    margin-left: 10px !important;
+    margin-top: 15px !important;
+}
+
+.pb-3 .row {
+    justify-content: center !important;
+}
+
+
+#header-section.main-header {
+    border-bottom: 1px solid #d2d6de;
+    height: 51px;
+    min-height: 51px;
+    max-height: 51px;
+    background: #2d323e;
+    color: #c0c2c5;
+    margin-left: -16px !important;
+    margin-right: -15px !important;
+}
+
+#header-section .header-style {
+    line-height: 38px;
+    height: 55px;
+    padding: 6px;
+    list-style: none;
+    text-align: center;
+    font-size: 28px;
 }

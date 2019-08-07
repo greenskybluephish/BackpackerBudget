@@ -6,13 +6,13 @@
 
 <h1>Edit this Budget</h1>
 
-<h4>Budget</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="BudgetId" />
+            <input type="hidden" asp-for="UserId" />
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
@@ -33,6 +33,16 @@
                 <input asp-for="BudgetAmount" class="form-control" />
                 <span asp-validation-for="BudgetAmount" class="text-danger"></span>
             </div>
+            <div class="control-section">
+                <div class="control-wrapper">
+                    <div style="padding-top:15px; padding-bottom: 15px;">
+                        <ejs-multiselect id="categories" placeholder="Select Categories for your budget" dataSource="@ViewBag.data" allowCustomValue="true" mode="Default">
+                            <e-multiselect-fields></e-multiselect-fields>
+                        </ejs-multiselect>
+                    </div>
+                </div>
+            </div>
+
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)

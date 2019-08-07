@@ -1,0 +1,72 @@
+﻿@model BackpackingBudget.Models.Budget
+
+@{
+    ViewData["Title"] = "View";
+}
+
+    <h1>@Model.Name</h1>
+
+<div>
+    <h4>Budget</h4>
+    <hr />
+    <dl class="row">
+
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.StartDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.StartDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.EndDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.EndDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.BudgetAmount)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.BudgetAmount)
+        </dd>
+    </dl>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Budget Category
+            </th>
+            <th>
+                Daily Budget
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.BudgetCategory)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BudgetPerDay)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.BudgetCategoryId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.BudgetCategoryId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.BudgetCategoryId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.BudgetId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

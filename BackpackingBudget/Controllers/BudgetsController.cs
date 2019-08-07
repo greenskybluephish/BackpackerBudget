@@ -44,25 +44,32 @@ namespace BackpackingBudget.Controllers
         }
 
         // GET: Budgets/Details/5
-        public async Task<IActionResult> Dashboard()
+        [Authorize]
+        public async Task<IActionResult> Details(int? id)
         {
-            var currentUser = await GetCurrentUserAsync();
-            var budget = await _context.Budget.Include(b => b.User).Where(b => b.User == currentUser && b.IsActive).FirstOrDefaultAsync();
 
-            if (budget == null)
+            if (id == null)
             {
-                return RedirectToAction("Index");
+                return NotFound();
             }
 
+            var currentUser = await GetCurrentUserAsync();
+            var budget = await _context.Budget.Include(b => b.BudgetCategory).FirstOrDefaultAsync(m => m.BudgetId == id && m.UserId == currentUser.Id);
+
             return View(budget);
+
         }
+
 
         // GET: Budgets/Create
         public IActionResult Create()
         {
+
+            ViewBag.minDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
             ViewBag.data = new string[] { "Transportation", "Lodging", "Food", "Activities", "Misc", "Non-Daily Expenses (Untracked)" };
             return View();
         }
+
 
         // POST: Budgets/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
@@ -83,21 +90,23 @@ namespace BackpackingBudget.Controllers
             {
                 var currentUser = await GetCurrentUserAsync();
                 budget.UserId = currentUser.Id;
-                _context.Add(budget);
-                await _context.SaveChangesAsync();
+
 
                 if (budget.IsActive)
                 {
-                    var makeInactive = await _context.Budget.Where(b => b.UserId == budget.UserId && budget.IsActive).FirstOrDefaultAsync();
+                    var makeInactive = await _context.Budget.Where(b => b.UserId == budget.UserId && b.IsActive).FirstOrDefaultAsync();
                     if (makeInactive != null)
                     {
                         makeInactive.IsActive = false;
                         _context.Update(makeInactive);
                         await _context.SaveChangesAsync();
                     }
-                    
+
                 }
-                var postedBudget = await _context.Budget.Where(b => b.BudgetId == budget.BudgetId).FirstOrDefaultAsync();
+                _context.Add(budget);
+                await _context.SaveChangesAsync();
+
+                var postedBudget = await _context.Budget.Where(b => b == budget).FirstOrDefaultAsync();
 
                 foreach (string category in categories)
                 {
@@ -111,25 +120,48 @@ namespace BackpackingBudget.Controllers
                 }
                 await _context.SaveChangesAsync();
 
-                return View("CreateDetails", postedBudget);
+                BudgetViewModel model = new BudgetViewModel();
+                model.Budget = postedBudget;
+                model.BudgetCategories = await _context.BudgetCategory.Where(bc => bc.BudgetId == budget.BudgetId).ToListAsync();
+
+                return View("CreateDetails", model);
             }
 
             return View(budget);
         }
 
-        public async Task<IActionResult> CreateDetails(Budget budget)
+        //public async Task<IActionResult> CreateDetails(Budget budget)
+        //{
+        //    if (budget.BudgetCategory.Count == 0)
+        //    {
+        //        return RedirectToAction("Edit", new { id = budget.BudgetId });
+        //    }
+
+
+        //    BudgetViewModel model = new BudgetViewModel();
+        //    model.Budget = budget;
+        //    model.BudgetCategories = await _context.BudgetCategory.Where(bc => bc.BudgetId == budget.BudgetId).ToListAsync();
+
+        //    return View(model);
+        //}
+
+
+
+        public IActionResult CreateDetails(BudgetViewModel model)
         {
-            BudgetViewModel model = new BudgetViewModel();
-            model.Budget = budget;
-            model.BudgetCategories = await _context.BudgetCategory.Where(bc => bc.BudgetId == budget.BudgetId).ToListAsync();
+            if (model.BudgetCategories == null || model.BudgetCategories.Count == 0)
+            {
+                return RedirectToAction("Edit", new { id = model.Budget.BudgetId });
+            }
 
             return View(model);
         }
 
-        [HttpPost]
+
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> CreateDetails([Bind("Name,BudgetPerDay,BudgetCategoryId,BudgetId")] List<BudgetCategory> categories)
+        [HttpPost, ActionName("CreateDetails")]
+        public async Task<IActionResult> CreateDetailsConfirm([Bind("Name,BudgetPerDay,BudgetCategoryId,BudgetId")] List<BudgetCategory> categories)
         {
                 foreach (var bc in categories)
                 {
@@ -137,11 +169,9 @@ namespace BackpackingBudget.Controllers
                     _context.Update(bc);
                 }
                 await _context.SaveChangesAsync();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Budgets");
             
         }
-
-
 
 
         // GET: Budgets/Edit/5
@@ -154,6 +184,9 @@ namespace BackpackingBudget.Controllers
             }
 
             var budget = await _context.Budget.FindAsync(id);
+
+           ViewBag.data = new string[] { "Transportation", "Lodging", "Food", "Activities", "Misc", "Non-Daily Expenses (Untracked)" };
+
             if (budget == null)
             {
                 return NotFound();
@@ -164,40 +197,37 @@ namespace BackpackingBudget.Controllers
         // POST: Budgets/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("BudgetId,Name,UserId,StartDate,EndDate,BudgetAmount,IsActive")] Budget budget)
+        public async Task<IActionResult> Edit(int id, string[] categories, [Bind("BudgetId, UserId, Name,StartDate,EndDate,BudgetAmount,IsActive")] Budget budget)
         {
             if (id != budget.BudgetId)
             {
                 return NotFound();
             }
-
+            
             ModelState.Remove("User");
-            ModelState.Remove("UserId");
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var currentUser = await GetCurrentUserAsync();
-                    budget.UserId = currentUser.Id;
+                    _context.Update(budget);
+                    await _context.SaveChangesAsync();
+
                     if (budget.IsActive)
                     {
-                        var makeInactive = await _context.Budget.Where(b => b.UserId == budget.UserId && b.IsActive).FirstOrDefaultAsync();
+                        var makeInactive = await _context.Budget.Where(b => b.IsActive && b.BudgetId != budget.BudgetId).FirstOrDefaultAsync();
                         if (makeInactive != null)
                         {
                             makeInactive.IsActive = false;
-                            _context.Update(makeInactive);   
+                            _context.Update(makeInactive);
                         }
-                        _context.Update(budget);
-                        await _context.SaveChangesAsync();
-                        return RedirectToAction(nameof(Dashboard));
+
                     }
 
-                    _context.Update(budget);
-                    await _context.SaveChangesAsync();
+
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -210,35 +240,61 @@ namespace BackpackingBudget.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                var budgetCategories = await _context.BudgetCategory.Where(bc => bc.BudgetId == budget.BudgetId).ToListAsync();
+
+                foreach (string category in categories)
+                {
+                    if (!budgetCategories.Exists(bc => bc.Name == category))
+                    {
+                        BudgetCategory bc = new BudgetCategory()
+                        {
+                            Name = category,
+                            BudgetId = budget.BudgetId,
+                            BudgetPerDay = 0,
+                        };
+                        _context.BudgetCategory.Add(bc);
+                    }
+                }
+                    await _context.SaveChangesAsync();
+
+                BudgetViewModel model = new BudgetViewModel
+                {
+                    Budget = budget,
+                    BudgetCategories = await _context.BudgetCategory.Where(bc => bc.BudgetId == budget.BudgetId).ToListAsync()
+                };
+
+                return View("CreateDetails", model);
+
             }
 
             return View(budget);
         }
 
-        // GET: Budgets/Delete/5
-        //public async Task<IActionResult> Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
+        //GET: Budgets/Delete/5
+        [Authorize]
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-        //    var budget = await _context.Budget
-        //        .Include(b => b.User)
-        //        .FirstOrDefaultAsync(m => m.BudgetId == id);
-        //    if (budget == null)
-        //    {
-        //        return NotFound();
-        //    }
+            var budget = await _context.Budget
+                .Include(b => b.User)
+                .FirstOrDefaultAsync(m => m.BudgetId == id);
+            if (budget == null)
+            {
+                return NotFound();
+            }
 
-        //    return View(budget);
-        //}
+            return View(budget);
+        }
 
         // POST: Budgets/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int id)
+        [Authorize]
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var budgetToDelete = await _context.Budget.FindAsync(id);
             _context.Budget.Remove(budgetToDelete);

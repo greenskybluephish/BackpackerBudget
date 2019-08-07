@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -12,12 +13,21 @@ namespace BackpackingBudget.Models.ViewModels
 
         public List<CategoryViewModel> CategoryViewModels { get; set; } = new List<CategoryViewModel>();
 
+        public List<ChartDataViewModel> ChartDataModels { get; set; } = new List<ChartDataViewModel>();
+
+        public List<ChartDataViewModel> ChartDataModels1 { get; set; } = new List<ChartDataViewModel>();
+        public List<ChartDataViewModel> ChartDataModels2 { get; set; } = new List<ChartDataViewModel>();
+        public List<ChartDataViewModel> ChartDataModels3 { get; set; } = new List<ChartDataViewModel>();
+
+        public BudgetItem BudgetItem { get; set; }
+        [DisplayFormat(DataFormatString = "{0:C}")]
+        [DataType(DataType.Currency)]
         public decimal AmountSpent { get; set; }
 
 
-        public decimal AmountRemaining()
+        public double  AmountRemaining()
         {
-            return Budget.BudgetAmount - AmountSpent;
+            return (double) (Budget.BudgetAmount - AmountSpent);
         }
         [DataType(DataType.Currency)]
         public decimal EstimatedPerDayAverage()
@@ -26,23 +36,33 @@ namespace BackpackingBudget.Models.ViewModels
         }
         [DataType(DataType.Currency)]
         public double ActualPerDayAverage()
+
         {
+            if (DaysSinceStart() == 0)
+            {
+                return (double)EstimatedPerDayAverage();
+            }
+
             return (double)AmountSpent / DaysSinceStart();
         }
 
         public double DaysLeftAtCurrentSpendingRate()
         {
-            return ActualPerDayAverage() / (TotalDays() - DaysSinceStart());
+            if (ActualPerDayAverage() == 0)
+            {
+                return (double)TotalDays();
+            }
+
+            return AmountRemaining() / ActualPerDayAverage();
         }
 
         public int DaysLeft() {
             return (int)Math.Floor(DaysLeftAtCurrentSpendingRate());
                 }
 
-        [DataType(DataType.Date)]
-        public DateTime EstimatedReturnDate()
+        public string EstimatedReturnDate()
         {
-           return DateTime.Now.AddDays(DaysLeftAtCurrentSpendingRate()).Date;
+           return DateTime.Now.AddDays(DaysLeftAtCurrentSpendingRate()).Date.ToLongDateString();
         }
 
 
@@ -56,8 +76,23 @@ namespace BackpackingBudget.Models.ViewModels
         public int DaysSinceStart()
         {
             DateTime today = DateTime.Now;
+            if (today.Day == Budget.StartDate.Day)
+            {
+                return 0;
+            }
             return today.Subtract(Budget.StartDate).Days;
         }
+
+        public string DateToString(DateTime d)
+        {
+            return d.ToString("d");
+        }
+
+        public string DoubleToCurrrency(Double d)
+        {
+            return d.ToString("C");
+        }
+
 
     }
 }

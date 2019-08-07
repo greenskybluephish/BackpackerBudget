@@ -1,0 +1,15 @@
+﻿
+@model BackpackingBudget.Models.ViewModels.TotalBudgetViewModel
+
+    <ejs-accumulationchart id="container" title="Category Breakdown" >
+        <e-accumulationchart-legendsettings visible="true" position="Top">
+        </e-accumulationchart-legendsettings>
+        <e-accumulationchart-tooltipsettings enable="false"></e-accumulationchart-tooltipsettings>
+        <e-accumulation-series-collection>
+            <e-accumulation-series dataSource="@Model.ChartDataModels" xName="xValue" yName="yValue" radius="70%" innerRadius="40%" name="Budget" explode=true explodeOffset="10%" explodeIndex=3>
+                <e-accumulationseries-datalabel visible="true" name="text">
+                    <e-font fontWeight="600" color="white"></e-font>
+                </e-accumulationseries-datalabel>
+            </e-accumulation-series>
+        </e-accumulation-series-collection>
+    </ejs-accumulationchart>

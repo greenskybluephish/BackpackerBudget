@@ -9,12 +9,14 @@ namespace BackpackingBudget.Models
         [Key]
         public int BudgetItemId { get; set; }
         [Required]
+        [Display(Name = "Category")]
         public int BudgetCategoryId { get; set; }
         [Required]
-        [DisplayFormat(DataFormatString = "{0:C}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:C}")]
+        [DataType(DataType.Currency)]
         public decimal Cost { get; set; }
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:MMM dd, yyyy}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:d}")]
         public DateTime PurchaseDate { get; set; }
         public string Description { get; set; }
 
