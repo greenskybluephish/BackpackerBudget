@@ -176,9 +176,10 @@ namespace BackpackingBudget.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var budgetItem = await _context.BudgetItem.FindAsync(id);
+            var bcId = budgetItem.BudgetCategoryId;
             _context.BudgetItem.Remove(budgetItem);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Details", new {id = budgetItem.BudgetCategoryId });
+            return RedirectToAction("Details", new {id = bcId });
         }
 
         private bool BudgetItemExists(int id)

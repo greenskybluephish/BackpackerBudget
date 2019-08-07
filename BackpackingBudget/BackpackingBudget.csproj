@@ -25,7 +25,6 @@
   <ItemGroup>
     <Folder Include="Data\Migrations\" />
     <Folder Include="Migrations\" />
-    <Folder Include="Views\Shared\Components\TotalBudget\" />
   </ItemGroup>
 
 </Project>

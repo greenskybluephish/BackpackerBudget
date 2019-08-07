@@ -13,6 +13,12 @@ namespace BackpackingBudget.Models.ViewModels
 
         public List<CategoryViewModel> CategoryViewModels { get; set; } = new List<CategoryViewModel>();
 
+        public List<ChartDataViewModel> ChartDataModels { get; set; } = new List<ChartDataViewModel>();
+
+        public List<ChartDataViewModel> ChartDataModels1 { get; set; } = new List<ChartDataViewModel>();
+        public List<ChartDataViewModel> ChartDataModels2 { get; set; } = new List<ChartDataViewModel>();
+        public List<ChartDataViewModel> ChartDataModels3 { get; set; } = new List<ChartDataViewModel>();
+
         public BudgetItem BudgetItem { get; set; }
         [DisplayFormat(DataFormatString = "{0:C}")]
         [DataType(DataType.Currency)]
@@ -86,5 +92,7 @@ namespace BackpackingBudget.Models.ViewModels
         {
             return d.ToString("C");
         }
+
+
     }
 }

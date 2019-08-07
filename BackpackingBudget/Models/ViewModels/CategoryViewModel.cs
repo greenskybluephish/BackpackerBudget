@@ -29,6 +29,10 @@ namespace BackpackingBudget.Models.ViewModels
 
         public string AveragePerDay()
         {
+            if (TotalDays == DaysRemaining)
+            {
+                return TotalSpent.ToString("C");
+            }
             return (TotalSpent / (TotalDays - DaysRemaining)).ToString("C");
         }
         
@@ -41,5 +45,6 @@ namespace BackpackingBudget.Models.ViewModels
         {
             return d.ToString("C");
         }
+
     }
 }

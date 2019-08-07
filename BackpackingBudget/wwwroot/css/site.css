@@ -165,42 +165,6 @@ col-xs-8.col-xl-5.col-lg-6.col-md-8.col-sm-8 h3 {
     margin: 10px inherit;
 }
 
-
-/* header-section styles */
-#header-section.main-header {
-    border-bottom: 1px solid #d2d6de;
-    height: 55px;
-    min-height: 55px;
-    max-height: 55px;
-    background: #1c86c8;
-    color: #fff;
-}
-
-#header-section .header-style {
-    line-height: 40px;
-    height: 55px;
-    padding: 8px;
-    list-style: none;
-    text-align: center;
-    font-size: 18px;
-}
-
-#header-section .border-left {
-    border-left: 1px solid #d2d6de;
-    width: 10em;
-}
-
-#header-section .float-left {
-    float: left;
-    padding-right: 0px;
-}
-
-#header-section .icon-menu {
-    width: 40px;
-    cursor: pointer;
-}
-
-/*end of header-section styles */
 /* Content area styles */
 
 .title {
@@ -391,4 +355,25 @@ col-xs-8.col-xl-5.col-lg-6.col-md-8.col-sm-8 h3 {
 
 .pb-3 .row {
     justify-content: center !important;
+}
+
+
+#header-section.main-header {
+    border-bottom: 1px solid #d2d6de;
+    height: 51px;
+    min-height: 51px;
+    max-height: 51px;
+    background: #2d323e;
+    color: #c0c2c5;
+    margin-left: -16px !important;
+    margin-right: -15px !important;
+}
+
+#header-section .header-style {
+    line-height: 38px;
+    height: 55px;
+    padding: 6px;
+    list-style: none;
+    text-align: center;
+    font-size: 28px;
 }

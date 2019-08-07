@@ -5,16 +5,16 @@
 }
 
 
-    <div class="row">
-        <div class="col-xs-8 col-xl-5 col-lg-6 col-md-8 col-sm-8">
-            <h1>@Model.Budget.Name</h1>
-        </div>
-        <div class="col-xs-8 col-xl-5 col-lg-6 col-md-8 col-sm-8 align-right">
-            <h3 class="header-style ">@Model.Budget.StartDate.ToLongDateString() - @Model.Budget.EndDateExists().ToLongDateString()</h3>
-        </div>
+<div class="row">
+    <div class="col-xs-8 col-xl-5 col-lg-6 col-md-8 col-sm-8">
+        <h1>@Model.Budget.Name</h1>
     </div>
+    <div class="col-xs-8 col-xl-5 col-lg-6 col-md-8 col-sm-8 align-right">
+        <h3 class="header-style ">@Model.Budget.StartDate.ToLongDateString() - @Model.Budget.EndDateExists().ToLongDateString()</h3>
+    </div>
+</div>
 
-    <hr />
+<hr />
 
 <div>
     <div id="dashboardRow" class="row">
@@ -85,35 +85,48 @@
 </div>
 <hr />
 
+@{
+    await Html.RenderPartialAsync("BarChart.cshtml", Model);
+}
+
+
+
+
+
 <div class='row'>
 
-        <!-- Basic Card Layout  -->
-        @foreach (var bc in Model.CategoryViewModels)
-        { 
-    <div class="col-xs-10 col-xl-4 col-lg-6 col-md-8 col-sm-10 card-container">
-        <div class="e-card card">
-            <div class="e-card-content">
-                <h3 class="e-card-header-title center-align">@bc.BudgetCategory.Name Totals</h3>
-                <div class="col-xs-12 col-sm-12 col-lg-6 col-md-6 center-align">
-                    <div>
-                        <a id="anchorbtn" class="e-btn e-primary" asp-controller="BudgetCategories" asp-action="Details" asp-route-id="@bc.BudgetCategory.BudgetCategoryId">@bc.BudgetCategory.Name Item Details</a>
+    <!-- Basic Card Layout  -->
+    @foreach (var bc in Model.CategoryViewModels)
+    {
+        <div class="col-xs-10 col-xl-4 col-lg-6 col-md-8 col-sm-10 card-container">
+            <div class="e-card card">
+                <div class="e-card-content">
+                    <h3 class="e-card-header-title center-align">@bc.BudgetCategory.Name Totals</h3>
+                    <div class="col-xs-12 col-sm-12 col-lg-6 col-md-6 center-align">
+                        <div>
+                            <a id="anchorbtn" class="e-btn e-primary" asp-controller="BudgetCategories" asp-action="Details" asp-route-id="@bc.BudgetCategory.BudgetCategoryId">@bc.BudgetCategory.Name Item Details</a>
+                        </div>
                     </div>
                 </div>
+                <ul>
+                    <li>Original Budget: @bc.BudgetCategory.BudgetPerDay.ToString("C") per day</li>
+                    <li>Total Spent on @bc.BudgetCategory.Name: @bc.TotalSpent.ToString("C") </li>
+                    @*<li>Total Estimated: @bc.TotalEstimated().ToString("C") </li>*@
+                    <li>Daily average so far: @bc.AveragePerDay() </li>
+                    <li>Daily average remaining: @bc.AveragePerDayRemaining() </li>
+                </ul>
             </div>
-            <ul>
-                <li>Original Budget: @bc.BudgetCategory.BudgetPerDay.ToString("C") per day</li>
-                <li>Total Spent on @bc.BudgetCategory.Name: @bc.TotalSpent.ToString("C") </li>
-                @*<li>Total Estimated: @bc.TotalEstimated().ToString("C") </li>*@
-                <li>Daily average so far: @bc.AveragePerDay() </li>
-                <li>Daily average remaining: @bc.AveragePerDayRemaining() </li>
-            </ul>
+
         </div>
-  
-    </div>
 
     }
 
 </div>
+
+@{
+    await Html.RenderPartialAsync("PieChart.cshtml", Model);
+}
+
 
 
 @{

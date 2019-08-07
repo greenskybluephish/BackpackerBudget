@@ -56,6 +56,32 @@ namespace BackpackingBudget.Controllers
             TotalModel.AmountSpent = cost;
             ViewData["BudgetCategoryId"] = new SelectList(budget.BudgetCategory, "BudgetCategoryId", "Name");
 
+            decimal costIfZero()
+            {
+                if (cost == 0)
+                {
+                    // perform the division only if cost is different than 0,
+                    return 1;
+                }
+                else
+                {
+                    return cost;
+                }
+
+            }
+
+            int zeroDay()
+            {
+                if (TotalModel.DaysSinceStart()==0)
+                {
+                    return 1;
+                }
+                else
+                {
+                    return TotalModel.DaysSinceStart();
+                }
+            }
+
             foreach (BudgetCategory bc in budget.BudgetCategory)
             {
                 var categoryCost = await _context.BudgetItem.Where(bi => bi.BudgetCategoryId == bc.BudgetCategoryId).Select(bi => bi.Cost).ToListAsync();
@@ -64,9 +90,29 @@ namespace BackpackingBudget.Controllers
                     BudgetCategory = bc,
                     TotalDays = TotalModel.TotalDays(),
                     DaysRemaining = TotalModel.TotalDays() - TotalModel.DaysSinceStart(),
-                    TotalSpent = categoryCost.Sum()
+                    TotalSpent = categoryCost.Sum(),
                 };
                 TotalModel.CategoryViewModels.Add(CategoryModel);
+                ChartDataViewModel ChartData = new ChartDataViewModel()
+                {
+                    xValue = bc.Name,
+                    yValue = (double)(categoryCost.Sum() / costIfZero()),
+                    text = (categoryCost.Sum() / costIfZero()).ToString("P")
+                };
+                TotalModel.ChartDataModels.Add(ChartData);
+                ChartDataViewModel ChartData1 = new ChartDataViewModel()
+                {
+                    xValue = bc.Name,
+                    PerDay = (double)bc.BudgetPerDay
+                };
+                TotalModel.ChartDataModels1.Add(ChartData1);
+                ChartDataViewModel ChartData2 = new ChartDataViewModel()
+                {
+                    xValue = bc.Name,
+                    PerDay = (double)categoryCost.Sum() / zeroDay()
+                };
+                TotalModel.ChartDataModels2.Add(ChartData2);
+
             }
 
             return View(TotalModel);
@@ -82,7 +128,6 @@ namespace BackpackingBudget.Controllers
         {
             return View();
         }
-
 
     }
 }

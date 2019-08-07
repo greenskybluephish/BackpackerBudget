@@ -44,17 +44,20 @@ namespace BackpackingBudget.Controllers
         }
 
         // GET: Budgets/Details/5
+        [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
-            var currentUser = await GetCurrentUserAsync();
-            var budget = await _context.Budget.Include(b => b.BudgetCategory).FirstOrDefaultAsync();
 
-            if (budget == null || budget.UserId != currentUser.Id)
+            if (id == null)
             {
-                return RedirectToAction("Index");
+                return NotFound();
             }
 
+            var currentUser = await GetCurrentUserAsync();
+            var budget = await _context.Budget.Include(b => b.BudgetCategory).FirstOrDefaultAsync(m => m.BudgetId == id && m.UserId == currentUser.Id);
+
             return View(budget);
+
         }
 
 

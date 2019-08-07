@@ -1,0 +1,39 @@
+﻿@model BackpackingBudget.Models.ViewModels.TotalBudgetViewModel
+
+
+<div id="container" align='center'>
+    <ejs-chart id="lineContainer" load="window.onChartLoad" title="Daily Average Breakdown">
+        <e-chart-chartarea>
+            <e-chartarea-border width="0"></e-chartarea-border>
+        </e-chart-chartarea>
+        <e-chart-tooltipsettings enable="true">
+        </e-chart-tooltipsettings>
+        <e-chart-primaryxaxis valueType="Category" title="Categories"
+                              interval=1>
+            <e-majorgridlines width="0"></e-majorgridlines>
+        </e-chart-primaryxaxis>
+        <e-chart-primaryyaxis labelFormat="$ {value}"
+                              edgeLabelPlacement="Shift">
+            <e-majorgridlines width="0"></e-majorgridlines>
+            <e-majorticklines width="0"></e-majorticklines>
+            <e-linestyle width="0"></e-linestyle>
+            <e-labelstyle color="transparent"></e-labelstyle>
+        </e-chart-primaryyaxis>
+        <e-series-collection>
+            <e-series  fill="skyblue" dataSource="@Model.ChartDataModels1" xName="xValue" yName="PerDay" name="Estimated" width=2 type="@Syncfusion.EJ2.Charts.ChartSeriesType.Bar">
+                <e-series-marker>
+                    <e-series-datalabel position="Top" visible="true">
+                        <e-font color="#ffffff" fontWeight="600"></e-font>
+                    </e-series-datalabel>
+                </e-series-marker>
+            </e-series>
+            <e-series  fill="lightgreen" dataSource="@Model.ChartDataModels2" xName="xValue" yName="PerDay" name="Actual" width=2 type="@Syncfusion.EJ2.Charts.ChartSeriesType.Bar">
+                <e-series-marker>
+                    <e-series-datalabel position="Top" visible="true">
+                        <e-font color="#ffffff" fontWeight="600"></e-font>
+                    </e-series-datalabel>
+                </e-series-marker>
+            </e-series>
+        </e-series-collection>
+    </ejs-chart>
+</div>
