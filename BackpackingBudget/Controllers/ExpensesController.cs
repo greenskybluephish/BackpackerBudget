@@ -179,7 +179,7 @@ namespace BackpackingBudget.Controllers
             var bcId = budgetItem.BudgetCategoryId;
             _context.BudgetItem.Remove(budgetItem);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Details", new {id = bcId });
+            return RedirectToAction("Details", "BudgetCategories", new {id = bcId });
         }
 
         private bool BudgetItemExists(int id)
