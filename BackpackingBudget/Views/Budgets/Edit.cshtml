@@ -7,53 +7,72 @@
 <h1>Edit this Budget</h1>
 
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="BudgetId" />
-            <input type="hidden" asp-for="UserId" />
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+<form asp-action="Edit">
+    <div class="content-wrapper">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="BudgetId" />
+        <input type="hidden" asp-for="UserId" />
+        <div class="row">
+            <div class="col s12">
+                <ejs-textbox id="Name" placeholder="Trip Name" floatLabelType="Auto"></ejs-textbox>
             </div>
-            <div class="form-group">
-                <label asp-for="StartDate" class="control-label"></label>
-                <input asp-for="StartDate" class="form-control" />
-                <span asp-validation-for="StartDate" class="text-danger"></span>
+
+            <div class="col s12">
+                <div class="control-label">
+                    Budget Amount
+                    <ejs-numerictextbox id="BudgetAmount" min="0" format="c2" value="500" step="50" Type="text"></ejs-numerictextbox>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="EndDate" class="control-label"></label>
-                <input asp-for="EndDate" class="form-control" />
-                <span asp-validation-for="EndDate" class="text-danger"></span>
+        </div>
+
+        <div class="row">
+            <div class="col s12">
+                <ejs-datepicker id="StartDate" name="StartDate" ejs-for="@Model.StartDate" min="@ViewBag.minDate" placeholder="Choose a Start Date"></ejs-datepicker>
+                <div id="errorMessage">
+                    <span asp-validation-for="StartDate"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="BudgetAmount" class="control-label"></label>
-                <input asp-for="BudgetAmount" class="form-control" />
-                <span asp-validation-for="BudgetAmount" class="text-danger"></span>
+            <div class="col s12">
+                <ejs-datepicker id="EndDate" name="EndDate" ejs-for="@Model.EndDate" min="@ViewBag.minDate" placeholder="Choose an End Date"></ejs-datepicker>
+                <div id="errorMessage">
+                    <span asp-validation-for="EndDate"></span>
+                </div>
             </div>
+        </div>
+
+
+        <div class="row">
             <div class="control-section">
-                <div class="control-wrapper">
+                <div class="col-xs-12 col-sm-12">
                     <div style="padding-top:15px; padding-bottom: 15px;">
-                        <ejs-multiselect id="categories" placeholder="Select Categories for your budget" dataSource="@ViewBag.data" allowCustomValue="true" mode="Default">
+                        <ejs-multiselect id="categories" placeholder="Select Categories for your budget" width="400px" dataSource="@ViewBag.data" allowCustomValue="true" mode="Default">
                             <e-multiselect-fields></e-multiselect-fields>
                         </ejs-multiselect>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
-                </label>
+        <div class="row">
+            <div class="col s12">
+                Set as active budget
+                <div class="input-field inline">
+                    <div style="padding-top:15px; padding-bottom: 15px;">
+                        <ejs-checkbox id="IsActive" checked="false" change="onChange"></ejs-checkbox>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+
+        <div class="row" style="padding-top:15px; padding-bottom: 15px;">
+            <div class="col-1"></div>
+            <div id="submitbutton">
+                <ejs-button id="submitButton" content="Submit"></ejs-button>
+
             </div>
-        </form>
+        </div>
     </div>
-</div>
+</form>
 
 <div>
     <a asp-action="Index">Back to List</a>
