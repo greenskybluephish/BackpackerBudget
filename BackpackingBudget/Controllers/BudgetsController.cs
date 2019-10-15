@@ -65,7 +65,7 @@ namespace BackpackingBudget.Controllers
         public IActionResult Create()
         {
 
-            ViewBag.minDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+            ViewBag.minDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day - 7);
             ViewBag.data = new string[] { "Transportation", "Lodging", "Food", "Activities", "Misc", "Non-Daily Expenses (Untracked)" };
             return View();
         }

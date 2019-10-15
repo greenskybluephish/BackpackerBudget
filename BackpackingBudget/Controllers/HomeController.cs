@@ -27,6 +27,7 @@ namespace BackpackingBudget.Controllers
         }
 
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
+
         [Authorize]        
         public async Task<IActionResult> Dashboard()
         {
@@ -48,12 +49,16 @@ namespace BackpackingBudget.Controllers
                 return RedirectToAction("Index", "Budgets");
             }
 
-            var budgetItems = await _context.BudgetItem.Include(b => b.BudgetCategory).ThenInclude(bc => bc.Budget).Where(bi => bi.BudgetCategory.Budget == budget).ToListAsync();
+            var budgetItems = await _context.BudgetItem
+                .Include(b => b.BudgetCategory)
+                .ThenInclude(bc => bc.Budget)
+                .Where(bi => bi.BudgetCategory.Budget == budget).ToListAsync();
 
             var cost = budgetItems.Select(c => c.Cost).Sum();
 
             TotalModel.Budget = budget;
             TotalModel.AmountSpent = cost;
+
             ViewData["BudgetCategoryId"] = new SelectList(budget.BudgetCategory, "BudgetCategoryId", "Name");
 
             decimal costIfZero()
@@ -84,7 +89,11 @@ namespace BackpackingBudget.Controllers
 
             foreach (BudgetCategory bc in budget.BudgetCategory)
             {
-                var categoryCost = await _context.BudgetItem.Where(bi => bi.BudgetCategoryId == bc.BudgetCategoryId).Select(bi => bi.Cost).ToListAsync();
+                var categoryCost = await _context.BudgetItem
+                    .Where(bi => bi.BudgetCategoryId == bc.BudgetCategoryId)
+                    .Select(bi => bi.Cost).ToListAsync();
+
+
                 CategoryViewModel CategoryModel = new CategoryViewModel()
                 {
                     BudgetCategory = bc,
@@ -93,6 +102,7 @@ namespace BackpackingBudget.Controllers
                     TotalSpent = categoryCost.Sum(),
                 };
                 TotalModel.CategoryViewModels.Add(CategoryModel);
+
                 ChartDataViewModel ChartData = new ChartDataViewModel()
                 {
                     xValue = bc.Name,
@@ -100,12 +110,14 @@ namespace BackpackingBudget.Controllers
                     text = (categoryCost.Sum() / costIfZero()).ToString("P")
                 };
                 TotalModel.ChartDataModels.Add(ChartData);
+
                 ChartDataViewModel ChartData1 = new ChartDataViewModel()
                 {
                     xValue = bc.Name,
                     PerDay = (double)bc.BudgetPerDay
                 };
                 TotalModel.ChartDataModels1.Add(ChartData1);
+
                 ChartDataViewModel ChartData2 = new ChartDataViewModel()
                 {
                     xValue = bc.Name,
